@@ -686,6 +686,47 @@ const POSTS = [
 },
 
 // Ejecutar al cargar
+function renderPosts(){
+  const grid=document.getElementById("postsGrid");
+  const count=document.getElementById("postsCount");
+  const statPosts=document.getElementById("statPosts");
+
+  if(!POSTS.length){
+    grid.innerHTML=`<div class="empty-state">
+      <div class="empty-icon">🪨</div>
+      <div class="empty-title">Aún sin hallazgos</div>
+      <div class="empty-sub">El primer roco está en camino</div>
+    </div>`;
+    count.textContent="0 hallazgos";
+    return;
+  }
+
+  count.textContent = POSTS.length + (POSTS.length===1?" hallazgo":" hallazgos");
+  if(statPosts) statPosts.textContent=POSTS.length;
+
+  grid.innerHTML = POSTS.map((post,i)=>`
+    <a href="${post.file}" class="post-card reveal" style="transition-delay:${i*.08}s" aria-label="Ver hallazgo: ${post.title}">
+      <div class="card-img-wrap">
+        <img class="card-img" src="${post.image}" alt="${post.title}" loading="lazy">
+        <div class="card-img-overlay"></div>
+        <div class="card-tag">${post.tag||"Hallazgo fluvial"}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">${post.location||""}</div>
+        <h3 class="card-title">${post.title}</h3>
+        <p class="card-excerpt">${post.excerpt||""}</p>
+        <div class="card-footer">
+          <div class="card-river">${post.river||""}</div>
+          <div class="card-cta">Ver hallazgo</div>
+        </div>
+      </div>
+    </a>
+  `).join("");
+
+  // Re-observar nuevos elementos reveal
+  document.querySelectorAll(".reveal:not(.visible)").forEach(el=>io.observe(el));
+}
+
 renderPosts();
 </script>
 </body>
