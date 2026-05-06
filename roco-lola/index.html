@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Roco · Lola · Coín — Hallazgo Arqueológico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════ */
+:root {
+  --gold:      #c9a84c;
+  --gold-light:#e8cc80;
+  --gold-dim:  #7a5f28;
+  --obsidian:  #0d0b08;
+  --charcoal:  #161210;
+  --earth:     #1e1710;
+  --parchment: #f0e6c8;
+  --ivory:     #faf6ec;
+  --stone-mid: #8a7355;
+  --water:     #3d6e8a;
+  --rust:      #7a3b1e;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Josefin Sans', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--obsidian);
+  color: var(--parchment);
+  font-family: var(--serif);
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════ */
+.cursor-dot {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all 0.12s ease-out;
+}
+
+/* ═══════════════════════════════════════════
+   GRAIN OVERLAY
+═══════════════════════════════════════════ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  mix-blend-mode: overlay;
+}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 48px;
+  background: linear-gradient(to bottom, rgba(13,11,8,0.95), transparent);
+  backdrop-filter: blur(2px);
+}
+
+.nav-brand {
+  font-family: var(--sans);
+  font-weight: 100;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.nav-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(240,230,200,0.5);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Left: Text */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 60px 80px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-eyebrow {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  animation: fadeUp 1s 0.2s forwards;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(52px, 5.5vw, 82px);
+  line-height: 1.05;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeUp 1s 0.4s forwards;
+}
+.hero-title .accent {
+  font-style: italic;
+  color: var(--gold-light);
+  font-weight: 300;
+}
+.hero-name {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(64px, 7vw, 110px);
+  line-height: 0.9;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  opacity: 0;
+  animation: fadeUp 1s 0.55s forwards;
+}
+.hero-subtitle-line {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(240,230,200,0.4);
+  margin-top: 20px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 1s 0.7s forwards;
+}
+
+.hero-desc {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(240,230,200,0.7);
+  max-width: 420px;
+  margin-bottom: 52px;
+  opacity: 0;
+  animation: fadeUp 1s 0.85s forwards;
+}
+.hero-desc strong {
+  color: var(--parchment);
+  font-weight: 400;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 1s 1s forwards;
+}
+
+.btn-primary {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  background: var(--gold);
+  color: var(--obsidian);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold-light);
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+.btn-primary:hover::after { transform: translateX(0); }
+.btn-primary span { position: relative; z-index: 1; }
+
+.btn-ghost {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 15px 28px;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.4);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s;
+}
+.btn-ghost:hover {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+
+/* Right: Visual */
+.hero-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(122,63,30,0.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 60% 80%, rgba(61,110,138,0.12) 0%, transparent 50%);
+}
+
+.stone-container {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: stoneReveal 1.8s 0.6s forwards;
+}
+
+@keyframes stoneReveal {
+  from { opacity: 0; transform: translateY(30px) rotate(-5deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+
+.stone-glow {
+  position: absolute;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(201,168,76,0.2) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity:0.6; }
+  50%      { transform: translate(-50%,-50%) scale(1.15); opacity:1; }
+}
+
+.stone-main-svg {
+  width: 280px;
+  height: 340px;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(201,168,76,0.15));
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  33%      { transform: translateY(-12px) rotate(1.5deg); }
+  66%      { transform: translateY(-6px) rotate(-1deg); }
+}
+
+.hero-data-bar {
+  position: absolute;
+  bottom: 40px;
+  left: 80px;
+  right: 0;
+  display: flex;
+  gap: 48px;
+  opacity: 0;
+  animation: fadeUp 1s 1.3s forwards;
+}
+.data-item { }
+.data-value {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.data-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(240,230,200,0.35);
+  margin-top: 6px;
+}
+
+/* Vertical line between hero halves */
+.hero-divider {
+  position: absolute;
+  top: 15%;
+  bottom: 15%;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.2) 30%, rgba(201,168,76,0.2) 70%, transparent);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  right: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: fadeUp 1s 1.6s forwards;
+}
+.scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.scroll-text {
+  font-family: var(--sans);
+  font-size: 8px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+  writing-mode: vertical-rl;
+}
+
+/* ═══════════════════════════════════════════
+   SECTION COMMONS
+═══════════════════════════════════════════ */
+section { position: relative; }
+
+.section-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+.section-heading {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.section-heading em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+/* ═══════════════════════════════════════════
+   AUDIO SECTION
+═══════════════════════════════════════════ */
+.audio-section {
+  padding: 120px 80px;
+  background: var(--charcoal);
+  overflow: hidden;
+}
+
+.audio-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.audio-text-col {}
+
+.audio-intro {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240,230,200,0.65);
+  margin-bottom: 40px;
+}
+.audio-intro strong {
+  color: var(--parchment);
+  font-weight: 400;
+}
+
+/* Player */
+.player-wrap {
+  background: linear-gradient(135deg, rgba(30,23,16,0.9), rgba(13,11,8,0.95));
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.player-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.player-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+}
+
+.player-eyebrow {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.player-eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 48px;
+  margin-bottom: 28px;
+}
+.wave-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: rgba(201,168,76,0.25);
+  transition: background 0.3s;
+  animation: none;
+}
+.wave-bar.active {
+  background: var(--gold);
+}
+.playing .wave-bar {
+  animation: waveAnim var(--dur, 1s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  background: var(--gold);
+}
+@keyframes waveAnim {
+  0%,100% { transform: scaleY(0.3); opacity: 0.5; }
+  50%      { transform: scaleY(1); opacity: 1; }
+}
+
+.progress-track {
+  height: 2px;
+  background: rgba(201,168,76,0.12);
+  margin-bottom: 12px;
+  cursor: pointer;
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  width: 0%;
+  transition: width 0.5s linear;
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.1em;
+  color: rgba(240,230,200,0.3);
+  margin-bottom: 28px;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.play-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--obsidian);
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 0 0 rgba(201,168,76,0);
+  position: relative;
+  overflow: hidden;
+}
+.play-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.4s;
+}
+.play-btn:hover::before { transform: scale(1); }
+.play-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 28px rgba(201,168,76,0.45);
+}
+.play-btn.is-playing {
+  box-shadow: 0 0 0 8px rgba(201,168,76,0.12), 0 0 0 16px rgba(201,168,76,0.06);
+  animation: playerPulse 2s ease-in-out infinite;
+}
+@keyframes playerPulse {
+  0%,100% { box-shadow: 0 0 0 8px rgba(201,168,76,0.12), 0 0 0 16px rgba(201,168,76,0.06); }
+  50%      { box-shadow: 0 0 0 12px rgba(201,168,76,0.08), 0 0 0 24px rgba(201,168,76,0.03); }
+}
+
+.stop-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--gold);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.stop-btn:hover { background: rgba(201,168,76,0.18); }
+
+.status-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 200;
+  letter-spacing: 0.12em;
+  color: rgba(240,230,200,0.4);
+  flex: 1;
+}
+
+.speed-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.speed-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(240,230,200,0.25);
+}
+.spd {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border: 1px solid rgba(201,168,76,0.15);
+  background: none;
+  color: rgba(201,168,76,0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.spd.on {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(201,168,76,0.1);
+}
+
+/* Transcript accordion */
+.transcript-toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid rgba(201,168,76,0.12);
+  padding: 18px 0 0;
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: rgba(201,168,76,0.5);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.transcript-toggle:hover { color: var(--gold); }
+.transcript-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+.transcript-body.open { max-height: 600px; }
+.transcript-text {
+  padding: 20px 0;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: rgba(240,230,200,0.55);
+  border-left: 1px solid rgba(201,168,76,0.12);
+  padding-left: 20px;
+  margin-top: 12px;
+}
+
+/* ═══════════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════════ */
+.timeline-section {
+  padding: 120px 80px;
+  background: var(--obsidian);
+  overflow: hidden;
+}
+.timeline-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.timeline-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.tl-grid {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  gap: 0 0;
+  position: relative;
+}
+
+.tl-line {
+  background: linear-gradient(to bottom,
+    transparent,
+    rgba(201,168,76,0.4) 10%,
+    rgba(201,168,76,0.4) 90%,
+    transparent);
+  position: relative;
+}
+
+.tl-item {
+  padding: 0 48px 60px;
+  position: relative;
+}
+.tl-item.right { text-align: left; }
+.tl-item.left  { text-align: right; }
+
+.tl-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--gold);
+  border-radius: 50%;
+  top: 4px;
+  box-shadow: 0 0 16px rgba(201,168,76,0.5);
+}
+.tl-item.right .tl-dot { left: -5px; }
+.tl-item.left  .tl-dot { right: -5px; }
+
+.tl-era {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.tl-date {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 300;
+  color: var(--parchment);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.tl-desc {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240,230,200,0.55);
+}
+.tl-site {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 3px 10px;
+}
+
+/* ═══════════════════════════════════════════
+   FACTS / CURIOSIDADES
+═══════════════════════════════════════════ */
+.facts-section {
+  padding: 120px 80px;
+  background: var(--earth);
+  overflow: hidden;
+}
+.facts-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.facts-header { margin-bottom: 64px; }
+
+.facts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.fact-card {
+  background: rgba(13,11,8,0.7);
+  padding: 40px 36px;
+  border-top: 1px solid rgba(201,168,76,0.15);
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.fact-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+}
+.fact-card:hover::before { transform: scaleX(1); }
+.fact-card:hover { background: rgba(30,23,16,0.85); }
+
+.fact-icon {
+  font-size: 28px;
+  margin-bottom: 20px;
+  display: block;
+  filter: grayscale(0.3);
+}
+.fact-num {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.fact-num sup { font-size: 22px; vertical-align: super; }
+.fact-title {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--stone-mid);
+  margin-bottom: 14px;
+}
+.fact-body {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240,230,200,0.55);
+}
+
+/* ═══════════════════════════════════════════
+   STONE ANALYSIS
+═══════════════════════════════════════════ */
+.analysis-section {
+  padding: 120px 80px;
+  background: var(--charcoal);
+}
+.analysis-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 100px;
+  align-items: start;
+}
+
+.verdict-box {
+  background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(122,63,30,0.08));
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 48px 40px;
+  position: relative;
+}
+.verdict-box::before {
+  content: 'CONCLUSIÓN';
+  position: absolute;
+  top: -10px;
+  left: 32px;
+  background: var(--charcoal);
+  padding: 0 12px;
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 200;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+}
+.verdict-type {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.verdict-subtitle {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.45);
+  margin-bottom: 28px;
+}
+.verdict-desc {
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240,230,200,0.65);
+}
+
+.properties-list { margin-top: 48px; }
+.prop-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+}
+.prop-key {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.5);
+}
+.prop-val {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--parchment);
+  text-align: right;
+}
+
+.action-callout {
+  margin-top: 48px;
+  padding: 32px;
+  background: rgba(201,168,76,0.06);
+  border-left: 2px solid var(--gold);
+}
+.callout-title {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.callout-text {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(240,230,200,0.65);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer {
+  background: var(--obsidian);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 80px 80px 48px;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 60px;
+}
+.footer-brand-name {
+  font-family: var(--serif);
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.footer-brand-sub {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.4);
+  margin-bottom: 24px;
+}
+.footer-desc {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: rgba(240,230,200,0.35);
+  max-width: 300px;
+}
+.footer-col-title {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(240,230,200,0.4);
+  text-decoration: none;
+  transition: color 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-links a::before {
+  content: '→';
+  font-size: 11px;
+  color: rgba(201,168,76,0.3);
+  transition: color 0.25s, transform 0.25s;
+}
+.footer-links a:hover::before {
+  color: var(--gold);
+  transform: translateX(4px);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 32px;
+  border-top: 1px solid rgba(201,168,76,0.08);
+}
+.footer-copy {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: 0.2em;
+  color: rgba(240,230,200,0.2);
+}
+.footer-badge {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 200;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.3);
+  border: 1px solid rgba(201,168,76,0.12);
+  padding: 6px 16px;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { height: 350px; }
+  .hero-left { padding: 120px 32px 60px; }
+  .hero-data-bar { left: 32px; bottom: 24px; gap: 28px; }
+  .hero-divider { display: none; }
+  .audio-inner { grid-template-columns: 1fr; gap: 48px; }
+  .audio-section { padding: 80px 32px; }
+  .timeline-section { padding: 80px 32px; }
+  .tl-grid { grid-template-columns: 2px 1fr; }
+  .tl-item.left { display: none; }
+  .tl-item.right { padding: 0 0 48px 32px; }
+  .tl-item.right .tl-dot { left: -5px; }
+  .facts-grid { grid-template-columns: 1fr; }
+  .facts-section { padding: 80px 32px; }
+  .analysis-inner { grid-template-columns: 1fr; gap: 48px; }
+  .analysis-section { padding: 80px 32px; }
+  footer { padding: 60px 32px 40px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+  nav { padding: 18px 24px; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">El Roco · Lola · Coín</div>
+  <ul class="nav-links">
+    <li><a href="#audio">Audio</a></li>
+    <li><a href="#timeline">Cronología</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#analisis">Análisis</a></li>
+    <li><a href="#footer">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Hallazgo arqueológico · Málaga, España</div>
+    <h1 class="hero-title">El <span class="accent">Roco</span></h1>
+    <div class="hero-name">Lola<br>Coín</div>
+    <div class="hero-subtitle-line">Río Cruz de Piedra · Coín, Málaga · 2026</div>
+    <p class="hero-desc">
+      Una pieza de <strong>calcarenita fluvial</strong> hallada en el corazón de uno de los territorios arqueológicos más ricos de Andalucía.
+      Más de <strong>200 millones de años</strong> de historia geológica y humana en la palma de una mano.
+    </p>
+    <div class="hero-cta-row">
+      <a href="#audio" class="btn-primary"><span>▶ Escuchar resumen</span></a>
+      <a href="#timeline" class="btn-ghost">Ver cronología</a>
+    </div>
+    <div style="margin-top: 40px; display: flex; gap: 20px;">
+        <img src="assets/roco_imagen.jpg" alt="El Roco 1" style="width: 150px; height: auto; border: 1px solid var(--gold); opacity: 0.8; transition: opacity 0.3s;">
+        <img src="assets/roco_imagen2.jpg" alt="El Roco 2" style="width: 150px; height: auto; border: 1px solid var(--gold); opacity: 0.8; transition: opacity 0.3s;">
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-bg-gradient"></div>
+    <div class="stone-container">
+      <div class="stone-glow"></div>
+      <svg class="stone-main-svg" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g1" cx="38%" cy="32%" r="70%">
+            <stop offset="0%" stop-color="#dbb870"/>
+            <stop offset="45%" stop-color="#9b7040"/>
+            <stop offset="80%" stop-color="#5a3a18"/>
+            <stop offset="100%" stop-color="#2d1a06"/>
+          </radialGradient>
+          <radialGradient id="g2" cx="55%" cy="60%" r="55%">
+            <stop offset="0%" stop-color="#c4984a" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#3d1f08" stop-opacity="0.4"/>
+          </radialGradient>
+          <filter id="stoneFilter">
+            <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="4" result="noise"/>
+            <feColorMatrix type="saturate" values="0.3" in="noise" result="colored"/>
+            <feBlend in="SourceGraphic" in2="colored" mode="soft-light" result="blended"/>
+            <feComposite in="blended" in2="SourceGraphic" operator="in"/>
+            <feGaussianBlur stdDeviation="0.4"/>
+          </filter>
+          <clipPath id="stoneClip">
+            <path d="M95 8 C130 5 158 18 170 48 C185 82 178 115 165 148 C150 182 130 220 100 248 C78 235 55 210 42 178 C28 145 22 108 30 72 C38 38 60 12 95 8Z"/>
+          </clipPath>
+        </defs>
+        <!-- Main body -->
+        <path d="M95 8 C130 5 158 18 170 48 C185 82 178 115 165 148 C150 182 130 220 100 248 C78 235 55 210 42 178 C28 145 22 108 30 72 C38 38 60 12 95 8Z" fill="url(#g1)" filter="url(#stoneFilter)"/>
+        <!-- Secondary bulge -->
+        <ellipse cx="118" cy="75" rx="35" ry="50" fill="url(#g2)" clip-path="url(#stoneClip)" opacity="0.8"/>
+        <!-- Top lobe -->
+        <ellipse cx="98" cy="42" rx="22" ry="28" fill="#c4984a" opacity="0.35" clip-path="url(#stoneClip)"/>
+        <!-- Texture dots -->
+        <circle cx="80" cy="100" r="3.5" fill="rgba(40,20,5,0.35)" clip-path="url(#stoneClip)"/>
+        <circle cx="110" cy="130" r="2.5" fill="rgba(40,20,5,0.28)" clip-path="url(#stoneClip)"/>
+        <circle cx="70" cy="155" r="3" fill="rgba(40,20,5,0.25)" clip-path="url(#stoneClip)"/>
+        <circle cx="130" cy="95" r="2" fill="rgba(40,20,5,0.22)" clip-path="url(#stoneClip)"/>
+        <circle cx="90" cy="185" r="2.8" fill="rgba(40,20,5,0.2)" clip-path="url(#stoneClip)"/>
+        <!-- Highlight sheen -->
+        <ellipse cx="78" cy="65" rx="18" ry="12" fill="rgba(255,235,160,0.12)" transform="rotate(-20 78 65)" clip-path="url(#stoneClip)"/>
+        <!-- Iron deposits (dark spots) -->
+        <circle cx="58" cy="178" r="8" fill="rgba(20,10,3,0.3)" clip-path="url(#stoneClip)"/>
+        <circle cx="138" cy="68" r="6" fill="rgba(20,10,3,0.25)" clip-path="url(#stoneClip)"/>
+        <!-- Water glisten -->
+        <ellipse cx="75" cy="50" rx="6" ry="3" fill="rgba(200,230,255,0.15)" transform="rotate(-10 75 50)" clip-path="url(#stoneClip)"/>
+      </svg>
+    </div>
+
+    <div class="hero-data-bar">
+      <div class="data-item">
+        <div class="data-value">200M</div>
+        <div class="data-label">Años formación</div>
+      </div>
+      <div class="data-item">
+        <div class="data-value">100K</div>
+        <div class="data-label">Años hab. humana</div>
+      </div>
+      <div class="data-item">
+        <div class="data-value">6+</div>
+        <div class="data-label">Civilizaciones</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-divider"></div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <div class="scroll-text">Explorar</div>
+  </div>
+</section>
+
+<!-- ══ AUDIO ══ -->
+<section class="audio-section" id="audio">
+  <div class="audio-inner">
+    <div class="audio-text-col reveal">
+      <div class="section-label">Narración</div>
+      <h2 class="section-heading">La historia<br>en <em>tu voz</em></h2>
+      <p class="audio-intro">
+        Descubre en audio coloquial cómo esta piedra recorrió
+        <strong>doscientos millones de años</strong> de historia geológica,
+        pasó por manos de neandertales, fenicios, romanos y árabes,
+        y terminó en el río Cruz de Piedra de <strong>Coín, Málaga</strong>.
+      </p>
+      <p class="audio-intro" style="font-size:17px;">
+        Utiliza los controles de velocidad para ajustar la narración a tu ritmo.
+        Expande el guión si prefieres leer.
+      </p>
+    </div>
+
+    <div class="player-wrap reveal reveal-delay-1">
+      <div class="player-eyebrow">Audio documental · Español coloquial</div>
+
+      <!-- Waveform visualization -->
+      <div class="waveform" id="waveform"></div>
+
+      <!-- Progress -->
+      <div class="progress-track" id="progressTrack">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="time-row">
+        <span id="timeElapsed">0:00</span>
+        <span id="statusLabel">Listo para reproducir</span>
+        <span>~3:00</span>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-row">
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+        <button class="stop-btn" onclick="stopAudio()" title="Detener">■</button>
+        <div class="status-label" id="statusText">Pulsa play para comenzar</div>
+      </div>
+
+      <!-- Speed -->
+      <div class="speed-row">
+        <span class="speed-label">Velocidad</span>
+        <button class="spd on" onclick="setSpeed(1.0,this)">1.0×</button>
+        <button class="spd" onclick="setSpeed(1.5,this)">1.5×</button>
+        <button class="spd" onclick="setSpeed(2.0,this)">2.0×</button>
+      </div>
+
+      <!-- Voice Selection -->
+      <div class="speed-row" style="margin-top:10px;">
+        <span class="speed-label">Voz</span>
+        <button class="spd on" id="voiceAlvaro" onclick="setVoice('Alvaro',this)">Álvaro</button>
+        <button class="spd" id="voiceElena" onclick="setVoice('Elena',this)">Elena</button>
+      </div>
+
+      <!-- Transcript -->
+      <button class="transcript-toggle" onclick="toggleTranscript()">
+        <span>📜 Leer guión completo</span>
+        <span id="tArrow">+</span>
+      </button>
+      <div class="transcript-body" id="transcriptBody">
+        <div class="transcript-text" id="transcriptText"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TIMELINE ══ -->
+<section class="timeline-section" id="timeline">
+  <div class="timeline-inner">
+    <div class="timeline-header reveal">
+      <div class="section-label" style="justify-content:center;">Cronología</div>
+      <h2 class="section-heading" style="text-align:center;">200 millones de años<br>en <em>una línea</em></h2>
+    </div>
+
+    <div class="tl-grid">
+      <!-- LEFT items (even) -->
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Triásico · Geología</div>
+        <div class="tl-date">~200M a.C.</div>
+        <div class="tl-desc">Formación de las calizas y mármoles dolomíticos de la Cordillera Bética bajo el mar de Tetis. El material de la piedra se origina aquí.</div>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Mioceno · Orogénesis</div>
+        <div class="tl-date">~20M a.C.</div>
+        <div class="tl-desc">Choque de placas euroasiática y africana. Las peridotitas del manto terrestre emergen en Sierra Alpujata, junto a Coín. Una rareza geológica mundial.</div>
+        <div class="tl-site">Sierra Alpujata · Coín</div>
+      </div>
+
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Pleistoceno</div>
+        <div class="tl-date">~2M a.C.</div>
+        <div class="tl-desc">El río Cruz de Piedra comienza a modelar el cauce. La piedra inicia su proceso de erosión y transporte fluvial durante decenas de miles de años.</div>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Paleolítico Medio</div>
+        <div class="tl-date">~100.000 a.C.</div>
+        <div class="tl-desc">Neandertales frecuentan los ríos de la comarca malagueña. Primeros homínidos que pueden haber tocado piedras como esta.</div>
+      </div>
+
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Paleolítico Superior</div>
+        <div class="tl-date">~40.000 a.C.</div>
+        <div class="tl-desc">Homo sapiens en Andalucía. El Taller de Ardite en Coín: selección de piedras del río para fabricar herramientas de sílex.</div>
+        <div class="tl-site">Taller de Ardite · Coín</div>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Calcolítico · Edad del Cobre</div>
+        <div class="tl-date">~5.000 a.C.</div>
+        <div class="tl-desc">Primeras aldeas en torno al río Pereilas. Cerámicas y objetos en la Ermita de la Fuensanta. Las piedras con forma adquieren valor ritual.</div>
+        <div class="tl-site">Cerro Carranque · Llano de la Virgen</div>
+      </div>
+
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Edad del Bronce</div>
+        <div class="tl-date">~3.000 a.C.</div>
+        <div class="tl-desc">Cultura argárica y megalítica en Málaga. Las piedras del río se integran en construcciones funerarias y ritos colectivos.</div>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Fenicios · Íberos</div>
+        <div class="tl-date">~800 a.C.</div>
+        <div class="tl-desc">Colonización fenicia de la costa malagueña. Griegos, íberos y cartagineses pasan por Coín, atraídos por sus recursos mineros e hídricos.</div>
+        <div class="tl-site">Cerro del Aljibe · Coín</div>
+      </div>
+
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Época Romana</div>
+        <div class="tl-date">~I a.C. — V d.C.</div>
+        <div class="tl-desc">Coín integrada en la red viaria romana. Las piedras del río se usan en acequias, calzadas y molinos. Restos documentados en Cerro del Aljibe.</div>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal reveal-delay-1">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Al-Ándalus</div>
+        <div class="tl-date">~VIII — XV d.C.</div>
+        <div class="tl-desc">Los árabes fundan Coín como núcleo urbano: «ciudad de las fuentes y los molinos». Los ríos son el eje de la economía hidráulica andalusí.</div>
+      </div>
+
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Reconquista</div>
+        <div class="tl-date">1485 d.C.</div>
+        <div class="tl-desc">Los Reyes Católicos toman Coín. El paisaje fluvial continúa siendo el alma del municipio. Los molinos de piedra siguen activos durante siglos.</div>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal reveal-delay-1" style="padding-bottom:0;">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Actualidad · 2026</div>
+        <div class="tl-date">Hoy</div>
+        <div class="tl-desc">La piedra emerge del río Cruz de Piedra. Millones de años de historia en una palma. El ciclo continúa.</div>
+        <div class="tl-site" style="background:rgba(201,168,76,0.08);">Río Cruz de Piedra · Coín</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CURIOSIDADES ══ -->
+<section class="facts-section" id="curiosidades">
+  <div class="facts-inner">
+    <div class="facts-header reveal">
+      <div class="section-label">Curiosidades</div>
+      <h2 class="section-heading">Lo que no sabías<br>de <em>Coín</em></h2>
+    </div>
+    <div class="facts-grid">
+      <div class="fact-card reveal">
+        <span class="fact-icon">🌍</span>
+        <div class="fact-num">100K<sup>+</sup></div>
+        <div class="fact-title">Años de historia humana</div>
+        <div class="fact-body">Los primeros asentamientos en Coín se remontan al Paleolítico. Neandertales y Homo sapiens vivieron junto a estos mismos ríos hace más de 100.000 años.</div>
+      </div>
+      <div class="fact-card reveal reveal-delay-1">
+        <span class="fact-icon">🪨</span>
+        <div class="fact-num">150 km</div>
+        <div class="fact-title">Profundidad de las peridotitas</div>
+        <div class="fact-body">La Sierra Alpujata, junto a Coín, alberga uno de los afloramientos de peridotitas más grandes del mundo. Rocas que vienen del manto terrestre, a 150 km de profundidad.</div>
+      </div>
+      <div class="fact-card reveal reveal-delay-2">
+        <span class="fact-icon">💧</span>
+        <div class="fact-num">2</div>
+        <div class="fact-title">Ríos que abrazan Coín</div>
+        <div class="fact-body">El río Pereilas y el río Grande, afluentes del Guadalhorce, hacen de Coín la llamada «ciudad de las fuentes y los molinos». El agua fue siempre su razón de ser.</div>
+      </div>
+      <div class="fact-card reveal">
+        <span class="fact-icon">⚗️</span>
+        <div class="fact-num">6+</div>
+        <div class="fact-title">Civilizaciones superpuestas</div>
+        <div class="fact-body">Paleolítico, Calcolítico, Fenicios, Íberos, Romanos, Árabes y Castellanos. Coín es un palimpsesto de civilizaciones, cada una dejando su huella sobre la anterior.</div>
+      </div>
+      <div class="fact-card reveal reveal-delay-1">
+        <span class="fact-icon">🏛️</span>
+        <div class="fact-num">BIC</div>
+        <div class="fact-title">Bien de Interés Cultural</div>
+        <div class="fact-body">El Llano de la Virgen (Coín) está declarado Bien de Interés Cultural. Sus yacimientos calcolíticos son referencia científica para toda Andalucía.</div>
+      </div>
+      <div class="fact-card reveal reveal-delay-2">
+        <span class="fact-icon">🌊</span>
+        <div class="fact-num">200M</div>
+        <div class="fact-title">Años bajo el mar de Tetis</div>
+        <div class="fact-body">La roca calcárea de esta piedra se formó en el fondo del antiguo mar de Tetis hace 200 millones de años. Toda Málaga fue fondo marino antes de ser tierra firme.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ANÁLISIS ══ -->
+<section class="analysis-section" id="analisis">
+  <div class="analysis-inner">
+    <div class="reveal">
+      <div class="section-label">Dictamen</div>
+      <h2 class="section-heading">¿Qué es<br><em>exactamente</em>?</h2>
+      <div class="verdict-box">
+        <div class="verdict-type">Calcarenita</div>
+        <div class="verdict-subtitle">Fluvial erosionada · Alta probabilidad</div>
+        <p class="verdict-desc">
+          Arenisca calcárea formada en el fondo marino durante el Mesozoico, erosionada
+          y redondeada por miles de años de transporte fluvial en el río Cruz de Piedra.
+          La coloración ocre-dorada se debe a depósitos de óxido de hierro.
+          La forma subantropomorfa es resultado de la erosión diferencial del agua.
+        </p>
+      </div>
+      <div class="action-callout">
+        <div class="callout-title">⚠ Recomendación arqueológica</div>
+        <p class="callout-text">
+          Dado el contexto arqueológico excepcional del área, se recomienda no devolver
+          la pieza al río. Contacta con el <strong>Museo Arqueológico de Coín</strong> o la
+          Delegación de Cultura de la Junta de Andalucía en Málaga para un análisis presencial.
+          Si presenta marcas de talla artificial, podrías haber hallado una pieza del Paleolítico.
+        </p>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="properties-list">
+        <div class="prop-item">
+          <span class="prop-key">Tipo de roca</span>
+          <span class="prop-val">Calcarenita / Travertino</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Origen</span>
+          <span class="prop-val">Mar de Tetis · Mesozoico</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Antigüedad</span>
+          <span class="prop-val">~200 millones a.</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Coloración</span>
+          <span class="prop-val">Óxido de hierro</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Morfología</span>
+          <span class="prop-val">Subantropomorfa</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Erosión</span>
+          <span class="prop-val">Fluvial · Miles de años</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Hallazgo</span>
+          <span class="prop-val">Río Cruz de Piedra</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Municipio</span>
+          <span class="prop-val">Coín, Málaga</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Fecha hallazgo</span>
+          <span class="prop-val">Mayo 2026</span>
+        </div>
+        <div class="prop-item">
+          <span class="prop-key">Estado</span>
+          <span class="prop-val">Pendiente de análisis</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">El Roco<br>Lola · Coín</div>
+        <div class="footer-brand-sub">Hallazgo arqueológico · 2026</div>
+        <p class="footer-desc">
+          Documentación arqueológica y geológica de una pieza hallada en el río Cruz de Piedra,
+          Coín, Málaga. Elaborado con rigor científico y pasión por el patrimonio.
+        </p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Instituciones</div>
+        <ul class="footer-links">
+          <li><a href="https://www.coin.es" target="_blank" rel="noopener">Ayuntamiento de Coín</a></li>
+          <li><a href="https://www.juntadeandalucia.es/organismos/culturaypatrimoniohistorico.html" target="_blank" rel="noopener">Junta de Andalucía · Cultura</a></li>
+          <li><a href="https://www.museosdeandalucia.es" target="_blank" rel="noopener">Museos de Andalucía</a></li>
+          <li><a href="https://www.malaga.es" target="_blank" rel="noopener">Diputación de Málaga</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Historia de Coín</div>
+        <ul class="footer-links">
+          <li><a href="https://www.malaga.es/es/laprovincia/tradiciones/lis_cd-3624/historia-de-coin" target="_blank" rel="noopener">Historia oficial de Coín</a></li>
+          <li><a href="https://www.andalupedia.es/p_termino_detalle.php?id_ter=5162" target="_blank" rel="noopener">Coín en Andalupedia</a></li>
+          <li><a href="https://www.ruralsierrasol.es/que-hacer-y-que-ver-en-coin/" target="_blank" rel="noopener">Yacimientos y rutas</a></li>
+          <li><a href="https://www.malaga.es/es/laprovincia/naturaleza/lis_cd-13701/garganta-del-rio-alaminos-coin-barranco-blanco" target="_blank" rel="noopener">Geología fluvial local</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Arqueología</div>
+        <ul class="footer-links">
+          <li><a href="https://cuevadenerja.es/prehistoria-en-malaga" target="_blank" rel="noopener">Prehistoria en Málaga</a></li>
+          <li><a href="https://www.sierrabermeja.es/2020/03/10/mapa-de-lugares-de-interes-geologico-de-la-provincia-de-malaga/" target="_blank" rel="noopener">Mapa geológico Málaga</a></li>
+          <li><a href="https://rutasarqueologicas.malaga.eu" target="_blank" rel="noopener">Rutas arqueológicas</a></li>
+          <li><a href="https://www.malaga.es/es/laprovincia/publicaciones/lis_cd-18623/ruta-por-los-origenes-de-malaga-yacimientos-visitables" target="_blank" rel="noopener">Yacimientos visitables</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 El Roco · Lola · Coín — Documentación arqueológica sin ánimo de lucro</div>
+      <div class="footer-badge">Coín · Málaga · Andalucía</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ SCRIPTS ══ -->
+<script>
+/* ─── Cursor ─── */
+const dot = document.getElementById('dot');
+const ring = document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+function animCursor() {
+  dot.style.left = mx+'px'; dot.style.top = my+'px';
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  ring.style.left = rx+'px'; ring.style.top = ry+'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+/* ─── Scroll reveal ─── */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+reveals.forEach(el => io.observe(el));
+
+/* ─── Waveform build ─── */
+const wf = document.getElementById('waveform');
+const heights = [20,35,55,45,70,60,80,65,50,75,85,60,45,70,55,40,65,80,70,50,85,60,45,75,55,65,80,45,60,70,55,40,75,65,50];
+heights.forEach((h,i) => {
+  const bar = document.createElement('div');
+  bar.className = 'wave-bar';
+  bar.style.height = h + 'px';
+  bar.style.setProperty('--dur', (0.6 + Math.random()*0.8).toFixed(2)+'s');
+  bar.style.setProperty('--delay', (i*0.04).toFixed(2)+'s');
+  wf.appendChild(bar);
+});
+
+/* ─── Audio Script ─── */
+const script = `Bueno, pues mira, te voy a contar la historia de esta piedrita que encontraron en el río Cruz de Piedra, en Coín, Málaga. Y te juro que tiene mucha más chicha de lo que parece.
+
+Primero, lo más guay: Coín es uno de esos pueblos que parece normalito pero que cuando rascas un poco te das cuenta de que lleva gente viviendo ahí desde hace literalmente cien mil años. No es broma. Desde los neandertales. ¿Te lo imaginas? Mientras en otros sitios no había ni rastro humano, por ese río ya había homínidos dando vueltas, buscando comida y usando piedras para cazar.
+
+Ahora, la piedra en sí. A ver, por el color, esa textura rugosa y granulada, y ese tono marrón dorado con manchas más oscuras, lo más probable es que sea lo que los geólogos llaman una calcarenita, que viene a ser una arenisca calcárea. O sea, una mezcla de arena y cal que se fue compactando durante millones de años bajo el mar. Sí, bajo el mar, porque toda esa zona de Málaga estuvo cubierta de agua hace muchísimo tiempo.
+
+La forma tan curiosa que tiene, esos lóbulos redondeados, ese perfil que casi parece una figura, es porque el agua del río la ha estado puliendo y trabajando durante miles y miles de años. El agua es la mejor escultora del mundo, y tiene toda la paciencia del universo.
+
+Ahora bien, lo interesante arqueológicamente es que Coín tiene un historial brutal. Hay un yacimiento que se llama el Taller de Ardite, del Paleolítico, donde los primeros humanos de la zona seleccionaban piedras exactamente como esta del río para fabricar herramientas. Además, en el Cerro de Carranque y en el Llano de la Virgen, que está declarado Bien de Interés Cultural, encontraron restos de la Edad del Cobre, con cerámicas y objetos de hace más de cinco mil años.
+
+Luego pasaron los fenicios, los griegos, los íberos, los romanos... Todos por Coín, porque el agua manda, y quien controla los ríos controla el territorio. Los romanos incluso dejaron evidencia en el Cerro del Aljibe. Y después vinieron los árabes, que convirtieron Coín en lo que ellos mismos llamaban la ciudad de las fuentes y los molinos. Hay molinos árabes que todavía están en pie.
+
+Y una curiosidad que mola mucho: en esa zona de Sierra Alpujata, junto a Coín, hay uno de los afloramientos de peridotitas más grandes del mundo. Las peridotitas son rocas que vienen del manto de la Tierra, de entre setenta y ciento cincuenta kilómetros de profundidad. O sea, tienes trozos del interior del planeta en la superficie. Eso es una rareza geológica a nivel mundial.
+
+Entonces, ¿qué es esta piedra concretamente? Con alta probabilidad es una calcarenita fluvial erosionada naturalmente, sin manipulación humana. Pero dado el contexto arqueológico brutal de esa zona, existe la posibilidad de que sea un percutor, una herramienta de mano, o incluso un ídolo votivo del Calcolítico, que es cuando los humanos empezaban a asignar significado espiritual a las piedras con formas sugestivas.
+
+¿Y qué hay que hacer con ella? Pues mira, no la tires de vuelta al río todavía. Lo más responsable sería llevarla al Museo Arqueológico de Coín o contactar con la Delegación de Cultura de la Junta de Andalucía en Málaga. Si resulta que tiene marcas de talla artificial, habrás hecho un descubrimiento arqueológico real. Y si es natural, también es una pieza preciosa con millones de años de historia encima.
+
+En resumen: esa piedrita tan simple es el resultado de doscientos millones de años de geología, miles de años de ríos puliendo la roca, y se ha encontrado en uno de los territorios con mayor densidad arqueológica de Andalucía. No está nada mal para algo recogido en el río.`;
+
+document.getElementById('transcriptText').textContent = script;
+
+/* ─── Player logic ─── */
+let utter=null, playing=false, paused=false, speed=0.9;
+let startTs=null, elapsed=0, progInterval=null;
+const totalDur = 185000; // ~3:05
+
+function togglePlay() {
+  if (!window.speechSynthesis) return;
+  if (playing && !paused) pauseAudio();
+  else if (paused)        resumeAudio();
+  else                    startAudio();
+}
+
+function startAudio() {
+  window.speechSynthesis.cancel();
+  utter = new SpeechSynthesisUtterance(script);
+  utter.lang = 'es-ES';
+  utter.rate = speed;
+  utter.pitch = 1.0;
+  const voices = window.speechSynthesis.getVoices();
+  const v = voices.find(v=>v.lang.startsWith('es')&&v.name.includes('Female'))
+          || voices.find(v=>v.lang.startsWith('es'));
+  if(v) utter.voice = v;
+
+  utter.onstart = () => {
+    playing=true; paused=false; elapsed=0; startTs=Date.now();
+    document.getElementById('playBtn').textContent='⏸';
+    document.getElementById('playBtn').classList.add('is-playing');
+    document.getElementById('waveform').classList.add('playing');
+    document.getElementById('statusText').textContent='Reproduciendo...';
+    startProg();
+  };
+  utter.onend = () => {
+    playing=false; paused=false;
+    document.getElementById('playBtn').textContent='▶';
+    document.getElementById('playBtn').classList.remove('is-playing');
+    document.getElementById('waveform').classList.remove('playing');
+    document.getElementById('statusText').textContent='✓ Completado';
+    document.getElementById('progressFill').style.width='100%';
+    clearInterval(progInterval);
+  };
+  utter.onerror = () => stopAudio();
+  window.speechSynthesis.speak(utter);
+}
+
+function pauseAudio() {
+  window.speechSynthesis.pause();
+  playing=false; paused=true;
+  elapsed += Date.now()-startTs;
+  document.getElementById('playBtn').textContent='▶';
+  document.getElementById('playBtn').classList.remove('is-playing');
+  document.getElementById('waveform').classList.remove('playing');
+  document.getElementById('statusText').textContent='⏸ Pausado';
+  clearInterval(progInterval);
+}
+
+function resumeAudio() {
+  window.speechSynthesis.resume();
+  playing=true; paused=false; startTs=Date.now();
+  document.getElementById('playBtn').textContent='⏸';
+  document.getElementById('playBtn').classList.add('is-playing');
+  document.getElementById('waveform').classList.add('playing');
+  document.getElementById('statusText').textContent='Reproduciendo...';
+  startProg();
+}
+
+function stopAudio() {
+  window.speechSynthesis.cancel();
+  playing=false; paused=false; elapsed=0; startTs=null;
+  document.getElementById('playBtn').textContent='▶';
+  document.getElementById('playBtn').classList.remove('is-playing');
+  document.getElementById('waveform').classList.remove('playing');
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('statusText').textContent='Pulsa play para comenzar';
+  document.getElementById('statusLabel').textContent='Listo para reproducir';
+  document.getElementById('timeElapsed').textContent='0:00';
+  clearInterval(progInterval);
+}
+
+function startProg() {
+  clearInterval(progInterval);
+  progInterval = setInterval(() => {
+    const total = elapsed + (Date.now()-startTs);
+    const adj = totalDur / speed;
+    const pct = Math.min((total/adj)*100, 98);
+    document.getElementById('progressFill').style.width = pct+'%';
+    const secs = Math.floor(total/1000);
+    document.getElementById('timeElapsed').textContent = `${Math.floor(secs/60)}:${String(secs%60).padStart(2,'0')}`;
+    const rem = Math.max(0, Math.round((adj-total)/1000));
+    document.getElementById('statusLabel').textContent = `~${Math.floor(rem/60)}:${String(rem%60).padStart(2,'0')} restantes`;
+  }, 400);
+}
+
+function setSpeed(s,btn) {
+  speed=s;
+  document.querySelectorAll('.spd').forEach(b=>{
+      if(b.onclick && b.onclick.toString().includes('setSpeed')) b.classList.remove('on');
+  });
+  btn.classList.add('on');
+  if(playing||paused) stopAudio();
+}
+
+function setVoice(v,btn) {
+  document.querySelectorAll('.spd').forEach(b=>{
+      if(b.onclick && b.onclick.toString().includes('setVoice')) b.classList.remove('on');
+  });
+  btn.classList.add('on');
+  if(playing||paused) stopAudio();
+}
+
+function toggleTranscript() {
+  const body = document.getElementById('transcriptBody');
+  const arrow = document.getElementById('tArrow');
+  body.classList.toggle('open');
+  arrow.textContent = body.classList.contains('open') ? '−' : '+';
+}
+
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>

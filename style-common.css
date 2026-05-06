@@ -1,0 +1,8 @@
+/* Mismo estilo que index.html */
+:root {
+  --gold: #c9a84c;
+  --obsidian: #0d0b08;
+  --parchment: #f0e6c8;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+}
+body { background: var(--obsidian); color: var(--parchment); font-family: var(--serif); }

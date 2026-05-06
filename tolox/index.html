@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Gigante de Tolox · Tolox — Hallazgo Arqueológico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════
+   VARIABLES — NO CAMBIAR
+════════════════════════════════════ */
+:root {
+  --gold:       #c9a84c;
+  --gold-light: #e8cc80;
+  --gold-dim:   #7a5f28;
+  --obsidian:   #0d0b08;
+  --charcoal:   #161210;
+  --earth:      #1e1710;
+  --parchment:  #f0e6c8;
+  --stone-mid:  #8a7355;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Josefin Sans', sans-serif;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--obsidian); color: var(--parchment); font-family: var(--serif); overflow-x: hidden; cursor: default; }
+
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1000; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* ── Cursor ── */
+.cursor-dot { width:6px; height:6px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+.cursor-ring { width:32px; height:32px; border:1px solid rgba(201,168,76,.4); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all .12s ease-out; }
+
+/* ── Nav ── */
+nav { position:fixed; top:0; left:0; right:0; z-index:900; display:flex; align-items:center; justify-content:space-between; padding:22px 48px; background:linear-gradient(to bottom,rgba(13,11,8,.95),transparent); backdrop-filter:blur(2px); }
+.nav-brand { font-family:var(--sans); font-weight:100; font-size:11px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); }
+.nav-links { display:flex; gap:36px; list-style:none; }
+.nav-links a { font-family:var(--sans); font-size:10px; font-weight:300; letter-spacing:.25em; text-transform:uppercase; color:rgba(240,230,200,.5); text-decoration:none; transition:color .3s; }
+.nav-links a:hover { color:var(--gold); }
+
+/* ── Hero ── */
+.hero { min-height:100vh; display:grid; grid-template-columns:1fr 1fr; position:relative; overflow:hidden; }
+.hero-left { display:flex; flex-direction:column; justify-content:center; padding:120px 60px 80px 80px; position:relative; z-index:2; }
+.hero-eyebrow { font-family:var(--sans); font-size:10px; font-weight:200; letter-spacing:.45em; text-transform:uppercase; color:var(--gold); margin-bottom:28px; display:flex; align-items:center; gap:14px; opacity:0; animation:fadeUp 1s .2s forwards; }
+.hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--gold); flex-shrink:0; }
+.hero-title { font-family:var(--serif); font-weight:300; font-size:clamp(52px,5.5vw,82px); line-height:1.05; margin-bottom:10px; opacity:0; animation:fadeUp 1s .4s forwards; }
+.hero-title .accent { font-style:italic; color:var(--gold-light); }
+.hero-name { font-family:var(--serif); font-weight:700; font-size:clamp(64px,7vw,110px); line-height:.9; color:var(--gold); letter-spacing:-.02em; opacity:0; animation:fadeUp 1s .55s forwards; }
+.hero-subtitle-line { font-family:var(--sans); font-size:10px; font-weight:200; letter-spacing:.4em; text-transform:uppercase; color:rgba(240,230,200,.4); margin-top:20px; margin-bottom:48px; opacity:0; animation:fadeUp 1s .7s forwards; }
+.hero-desc { font-size:18px; font-weight:300; line-height:1.75; color:rgba(240,230,200,.7); max-width:420px; margin-bottom:52px; opacity:0; animation:fadeUp 1s .85s forwards; }
+.hero-desc strong { color:var(--parchment); font-weight:400; }
+.hero-cta-row { display:flex; gap:20px; align-items:center; opacity:0; animation:fadeUp 1s 1s forwards; }
+.btn-primary { font-family:var(--sans); font-size:11px; font-weight:300; letter-spacing:.25em; text-transform:uppercase; padding:16px 36px; background:var(--gold); color:var(--obsidian); border:none; cursor:pointer; text-decoration:none; display:inline-block; transition:all .3s; position:relative; overflow:hidden; }
+.btn-primary::after { content:''; position:absolute; inset:0; background:var(--gold-light); transform:translateX(-100%); transition:transform .4s ease; }
+.btn-primary:hover::after { transform:translateX(0); }
+.btn-primary span { position:relative; z-index:1; }
+.btn-ghost { font-family:var(--sans); font-size:11px; font-weight:300; letter-spacing:.25em; text-transform:uppercase; padding:15px 28px; background:transparent; color:var(--gold); border:1px solid rgba(201,168,76,.4); cursor:pointer; text-decoration:none; display:inline-block; transition:all .3s; }
+.btn-ghost:hover { border-color:var(--gold); background:rgba(201,168,76,.08); }
+.hero-right { position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.hero-bg-gradient { position:absolute; inset:0; background:radial-gradient(ellipse at 30% 50%,rgba(122,63,30,.25) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.1) 0%,transparent 50%); }
+.stone-container { position:relative; z-index:2; opacity:0; animation:stoneReveal 1.8s .6s forwards; }
+@keyframes stoneReveal { from{opacity:0;transform:translateY(30px) rotate(-5deg)} to{opacity:1;transform:translateY(0) rotate(0)} }
+.stone-glow { position:absolute; width:300px; height:300px; background:radial-gradient(circle,rgba(201,168,76,.2) 0%,transparent 70%); top:50%; left:50%; transform:translate(-50%,-50%); animation:glowPulse 4s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6} 50%{transform:translate(-50%,-50%) scale(1.15);opacity:1} }
+.stone-main-svg { width:280px; height:340px; filter:drop-shadow(0 30px 60px rgba(0,0,0,.8)) drop-shadow(0 0 40px rgba(201,168,76,.15)); animation:float 6s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0) rotate(0)} 33%{transform:translateY(-12px) rotate(1.5deg)} 66%{transform:translateY(-6px) rotate(-1deg)} }
+.hero-data-bar { position:absolute; bottom:40px; left:80px; right:0; display:flex; gap:48px; opacity:0; animation:fadeUp 1s 1.3s forwards; }
+.data-value { font-family:var(--serif); font-size:32px; font-weight:300; color:var(--gold); line-height:1; }
+.data-label { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:rgba(240,230,200,.35); margin-top:6px; }
+.hero-divider { position:absolute; top:15%; bottom:15%; left:50%; width:1px; background:linear-gradient(to bottom,transparent,rgba(201,168,76,.2) 30%,rgba(201,168,76,.2) 70%,transparent); }
+.scroll-hint { position:absolute; bottom:32px; right:48px; display:flex; flex-direction:column; align-items:center; gap:10px; opacity:0; animation:fadeUp 1s 1.6s forwards; }
+.scroll-line { width:1px; height:50px; background:linear-gradient(to bottom,rgba(201,168,76,.6),transparent); animation:scrollLine 2s ease-in-out infinite; }
+@keyframes scrollLine { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
+.scroll-text { font-family:var(--sans); font-size:8px; letter-spacing:.4em; text-transform:uppercase; color:rgba(201,168,76,.5); writing-mode:vertical-rl; }
+
+/* ── Commons ── */
+.section-label { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.5em; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+.section-label::before { content:''; width:32px; height:1px; background:var(--gold); flex-shrink:0; }
+.section-heading { font-family:var(--serif); font-weight:300; font-size:clamp(34px,4vw,58px); line-height:1.1; margin-bottom:24px; }
+.section-heading em { font-style:italic; color:var(--gold-light); }
+.reveal { opacity:0; transform:translateY(30px); transition:opacity .9s ease,transform .9s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.15s; }
+.reveal-delay-2 { transition-delay:.3s; }
+.reveal-delay-3 { transition-delay:.45s; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── Photo section ── */
+.photo-section { padding:100px 80px; background:var(--obsidian); border-bottom:1px solid rgba(201,168,76,.08); }
+.photo-inner { max-width:1100px; margin:0 auto; }
+.photo-header { text-align:center; margin-bottom:64px; }
+.photo-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+.photo-frame { position:relative; aspect-ratio:3/4; background:rgba(30,23,16,.6); border:1px solid rgba(201,168,76,.18); overflow:hidden; cursor:pointer; transition:border-color .3s,box-shadow .3s; }
+.photo-frame:hover { border-color:rgba(201,168,76,.5); box-shadow:0 0 40px rgba(201,168,76,.08); }
+.photo-frame::before,.photo-frame::after { content:''; position:absolute; width:18px; height:18px; border-color:var(--gold); border-style:solid; opacity:.5; z-index:2; pointer-events:none; }
+.photo-frame::before { top:10px; left:10px; border-width:1px 0 0 1px; }
+.photo-frame::after  { bottom:10px; right:10px; border-width:0 1px 1px 0; }
+.photo-frame-inner { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; }
+.photo-frame-inner::before,.photo-frame-inner::after { content:''; position:absolute; width:18px; height:18px; border-color:var(--gold); border-style:solid; opacity:.5; pointer-events:none; }
+.photo-frame-inner::before { top:10px; right:10px; border-width:1px 1px 0 0; }
+.photo-frame-inner::after  { bottom:10px; left:10px; border-width:0 0 1px 1px; }
+.photo-placeholder-icon { font-size:36px; margin-bottom:16px; opacity:.3; transition:opacity .3s; }
+.photo-frame:hover .photo-placeholder-icon { opacity:.6; }
+.photo-placeholder-text { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.4em; text-transform:uppercase; color:rgba(201,168,76,.4); text-align:center; transition:color .3s; }
+.photo-frame:hover .photo-placeholder-text { color:rgba(201,168,76,.7); }
+.photo-upload-input { position:absolute; inset:0; opacity:0; cursor:pointer; z-index:3; }
+.photo-loaded { position:absolute; inset:0; object-fit:cover; width:100%; height:100%; display:none; }
+.photo-label { position:absolute; bottom:0; left:0; right:0; padding:20px 20px 16px; background:linear-gradient(to top,rgba(13,11,8,.92),transparent); font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:rgba(201,168,76,.7); z-index:2; pointer-events:none; }
+.photo-remove-btn { position:absolute; top:14px; right:14px; z-index:4; background:rgba(13,11,8,.85); border:1px solid rgba(201,168,76,.3); color:var(--gold); width:28px; height:28px; border-radius:50%; font-size:14px; cursor:pointer; display:none; align-items:center; justify-content:center; transition:background .2s; }
+.photo-remove-btn:hover { background:rgba(201,168,76,.2); }
+
+/* ── Audio section ── */
+.audio-section { padding:120px 80px; background:var(--charcoal); overflow:hidden; }
+.audio-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.audio-intro { font-size:20px; font-weight:300; line-height:1.8; color:rgba(240,230,200,.65); margin-bottom:32px; }
+.audio-intro strong { color:var(--parchment); font-weight:400; }
+.player-wrap { background:linear-gradient(145deg,rgba(22,18,12,.95),rgba(13,11,8,.98)); border:1px solid rgba(201,168,76,.15); padding:40px; position:relative; overflow:hidden; }
+.player-wrap::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold) 40%,var(--gold-light) 60%,transparent); opacity:.7; }
+.player-eyebrow { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.45em; text-transform:uppercase; color:var(--gold); margin-bottom:28px; display:flex; align-items:center; gap:12px; }
+.player-eyebrow::before { content:''; width:20px; height:1px; background:var(--gold); }
+.waveform { display:flex; align-items:center; gap:2.5px; height:56px; margin-bottom:24px; padding:4px 0; }
+.wave-bar { flex:1; max-width:4px; border-radius:3px; background:rgba(201,168,76,.18); transition:background .4s; }
+.playing .wave-bar { animation:waveAnim var(--dur,1s) ease-in-out infinite; animation-delay:var(--delay,0s); background:linear-gradient(to top,var(--gold-dim),var(--gold)); }
+@keyframes waveAnim { 0%,100%{transform:scaleY(.2);opacity:.4} 50%{transform:scaleY(1);opacity:1} }
+.progress-track { height:3px; background:rgba(201,168,76,.1); margin-bottom:10px; cursor:pointer; position:relative; border-radius:2px; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold),var(--gold-light)); width:0%; transition:width .4s linear; position:relative; border-radius:2px; }
+.progress-fill::after { content:''; position:absolute; right:-5px; top:-4px; width:11px; height:11px; background:var(--gold); border-radius:50%; box-shadow:0 0 8px rgba(201,168,76,.6); }
+.time-row { display:flex; justify-content:space-between; font-family:var(--sans); font-size:10px; font-weight:200; letter-spacing:.08em; color:rgba(240,230,200,.28); margin-bottom:28px; }
+.controls-row { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+.play-btn { width:62px; height:62px; border-radius:50%; background:linear-gradient(135deg,var(--gold-light),var(--gold),#a87820); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--obsidian); font-size:20px; flex-shrink:0; transition:transform .2s,box-shadow .3s; box-shadow:0 4px 20px rgba(201,168,76,.25); position:relative; overflow:hidden; }
+.play-btn:hover { transform:scale(1.07); box-shadow:0 6px 32px rgba(201,168,76,.5); }
+.play-btn:active { transform:scale(.97); }
+.play-btn.is-playing { animation:playerPulse 2.2s ease-in-out infinite; }
+@keyframes playerPulse { 0%,100%{box-shadow:0 4px 20px rgba(201,168,76,.3),0 0 0 0 rgba(201,168,76,.15)} 50%{box-shadow:0 4px 28px rgba(201,168,76,.5),0 0 0 14px rgba(201,168,76,0)} }
+.stop-btn { width:40px; height:40px; border-radius:50%; background:rgba(201,168,76,.07); border:1px solid rgba(201,168,76,.2); color:var(--gold); font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+.stop-btn:hover { background:rgba(201,168,76,.16); border-color:var(--gold); }
+.status-label { font-family:var(--sans); font-size:11px; font-weight:200; letter-spacing:.1em; color:rgba(240,230,200,.38); flex:1; min-width:0; }
+/* ⚠️ VELOCIDADES: SOLO 1×, 1.5×, 2× — NO AÑADIR MÁS */
+.speed-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.speed-label { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:rgba(240,230,200,.2); margin-right:4px; }
+.spd { font-family:var(--sans); font-size:10px; font-weight:300; letter-spacing:.08em; padding:5px 13px; border:1px solid rgba(201,168,76,.13); background:none; color:rgba(201,168,76,.45); cursor:pointer; transition:all .2s; border-radius:1px; }
+.spd.on { border-color:var(--gold); color:var(--gold); background:rgba(201,168,76,.1); }
+.spd:hover:not(.on) { border-color:rgba(201,168,76,.3); color:rgba(201,168,76,.7); }
+.transcript-toggle { width:100%; background:none; border:none; border-top:1px solid rgba(201,168,76,.1); padding:18px 0 0; margin-top:24px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; color:rgba(201,168,76,.45); font-family:var(--sans); font-size:10px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; transition:color .25s; }
+.transcript-toggle:hover { color:var(--gold); }
+.transcript-body { max-height:0; overflow:hidden; transition:max-height .6s cubic-bezier(.4,0,.2,1); }
+.transcript-body.open { max-height:700px; overflow-y:auto; }
+.transcript-text { padding:20px 0 4px 20px; font-size:15px; font-weight:300; line-height:1.9; color:rgba(240,230,200,.52); border-left:1px solid rgba(201,168,76,.1); margin-top:14px; white-space:pre-line; }
+
+/* ── Timeline ── */
+.timeline-section { padding:120px 80px; background:var(--obsidian); overflow:hidden; }
+.timeline-inner { max-width:1100px; margin:0 auto; }
+.timeline-header { text-align:center; margin-bottom:80px; }
+.tl-grid { display:grid; grid-template-columns:1fr 2px 1fr; }
+.tl-line { background:linear-gradient(to bottom,transparent,rgba(201,168,76,.4) 10%,rgba(201,168,76,.4) 90%,transparent); }
+.tl-item { padding:0 48px 60px; position:relative; }
+.tl-item.left { text-align:right; }
+.tl-dot { position:absolute; width:10px; height:10px; background:var(--gold); border-radius:50%; top:4px; box-shadow:0 0 16px rgba(201,168,76,.5); }
+.tl-item.right .tl-dot { left:-5px; }
+.tl-item.left  .tl-dot { right:-5px; }
+.tl-era { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.tl-date { font-family:var(--serif); font-size:26px; font-weight:300; color:var(--parchment); line-height:1; margin-bottom:10px; }
+.tl-desc { font-size:15px; font-weight:300; line-height:1.7; color:rgba(240,230,200,.55); }
+.tl-site { display:inline-block; margin-top:8px; font-family:var(--sans); font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:rgba(201,168,76,.5); border:1px solid rgba(201,168,76,.2); padding:3px 10px; }
+
+/* ── Facts ── */
+.facts-section { padding:120px 80px; background:var(--earth); overflow:hidden; }
+.facts-inner { max-width:1100px; margin:0 auto; }
+.facts-header { margin-bottom:64px; }
+.facts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+.fact-card { background:rgba(13,11,8,.7); padding:40px 36px; border-top:1px solid rgba(201,168,76,.15); transition:background .3s; position:relative; overflow:hidden; }
+.fact-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); transform:scaleX(0); transition:transform .4s; }
+.fact-card:hover::before { transform:scaleX(1); }
+.fact-card:hover { background:rgba(30,23,16,.85); }
+.fact-icon { font-size:28px; margin-bottom:20px; display:block; }
+.fact-num { font-family:var(--serif); font-size:52px; font-weight:300; color:var(--gold); line-height:1; margin-bottom:8px; }
+.fact-num sup { font-size:22px; vertical-align:super; }
+.fact-title { font-family:var(--sans); font-size:10px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:var(--stone-mid); margin-bottom:14px; }
+.fact-body { font-size:16px; font-weight:300; line-height:1.7; color:rgba(240,230,200,.55); }
+
+/* ── Analysis ── */
+.analysis-section { padding:120px 80px; background:var(--charcoal); }
+.analysis-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:start; }
+.verdict-box { background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(122,63,30,.08)); border:1px solid rgba(201,168,76,.2); padding:48px 40px; position:relative; }
+.verdict-box::before { content:'CONCLUSIÓN'; position:absolute; top:-10px; left:32px; background:var(--charcoal); padding:0 12px; font-family:var(--sans); font-size:8px; font-weight:200; letter-spacing:.5em; color:var(--gold); }
+.verdict-type { font-family:var(--serif); font-size:38px; font-weight:300; color:var(--gold-light); margin-bottom:6px; }
+.verdict-subtitle { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:rgba(201,168,76,.5); margin-bottom:24px; }
+.verdict-desc { font-size:18px; font-weight:300; line-height:1.8; color:rgba(240,230,200,.7); }
+.action-callout { margin-top:32px; padding:28px 32px; border-left:2px solid var(--gold); background:rgba(201,168,76,.04); }
+.callout-title { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+.callout-text { font-size:16px; font-weight:300; line-height:1.75; color:rgba(240,230,200,.6); }
+.properties-list { display:flex; flex-direction:column; gap:0; }
+.prop-item { display:flex; justify-content:space-between; align-items:baseline; padding:16px 0; border-bottom:1px solid rgba(201,168,76,.08); gap:16px; }
+.prop-key { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:rgba(240,230,200,.3); flex-shrink:0; }
+.prop-val { font-family:var(--serif); font-size:17px; font-weight:300; color:rgba(240,230,200,.75); text-align:right; }
+
+/* ── Footer ── */
+footer { padding:80px 80px 48px; background:var(--earth); border-top:1px solid rgba(201,168,76,.08); }
+.footer-inner { max-width:1100px; margin:0 auto; }
+.footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; margin-bottom:60px; }
+.footer-brand-name { font-family:var(--serif); font-size:28px; font-weight:300; color:var(--gold); margin-bottom:6px; }
+.footer-brand-sub { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.45em; text-transform:uppercase; color:rgba(201,168,76,.4); margin-bottom:24px; }
+.footer-desc { font-size:15px; font-weight:300; line-height:1.75; color:rgba(240,230,200,.35); max-width:300px; }
+.footer-col-title { font-family:var(--sans); font-size:9px; font-weight:300; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid rgba(201,168,76,.15); }
+.footer-links { list-style:none; }
+.footer-links li { margin-bottom:12px; }
+.footer-links a { font-size:15px; font-weight:300; color:rgba(240,230,200,.4); text-decoration:none; transition:color .25s; display:flex; align-items:center; gap:8px; }
+.footer-links a:hover { color:var(--gold); }
+.footer-links a::before { content:'→'; font-size:11px; color:rgba(201,168,76,.3); transition:color .25s,transform .25s; }
+.footer-links a:hover::before { color:var(--gold); transform:translateX(4px); }
+.footer-bottom { display:flex; justify-content:space-between; align-items:center; padding-top:32px; border-top:1px solid rgba(201,168,76,.08); }
+.footer-copy { font-family:var(--sans); font-size:10px; font-weight:200; letter-spacing:.2em; color:rgba(240,230,200,.2); }
+.footer-badge { font-family:var(--sans); font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase; color:rgba(201,168,76,.3); border:1px solid rgba(201,168,76,.12); padding:6px 16px; }
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;min-height:auto}.hero-right{height:350px}
+  .hero-left{padding:120px 32px 60px}.hero-data-bar{left:32px;bottom:24px;gap:28px}
+  .hero-divider{display:none}.audio-inner{grid-template-columns:1fr;gap:48px}
+  .audio-section,.timeline-section,.facts-section,.analysis-section,.photo-section{padding:80px 32px}
+  .tl-grid{grid-template-columns:2px 1fr}.tl-item.left{display:none}
+  .tl-item.right{padding:0 0 48px 32px}.facts-grid{grid-template-columns:1fr}
+  .analysis-inner{grid-template-columns:1fr;gap:48px}.photo-grid{grid-template-columns:1fr}
+  footer{padding:60px 32px 40px}.footer-top{grid-template-columns:1fr 1fr;gap:40px}
+  nav{padding:18px 24px}.nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+  <div class="nav-brand">El Gigante de Tolox · Málaga</div>
+  <ul class="nav-links">
+    <li><a href="#fotos">Fotos</a></li>
+    <li><a href="#audio">Audio</a></li>
+    <li><a href="#timeline">Cronología</a></li>
+    <li><a href="#curiosidades">Curiosidades</a></li>
+    <li><a href="#analisis">Análisis</a></li>
+    <li><a href="#footer">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div style="margin-top: 40px; display: flex; justify-content: center;">
+    <img src="../assets/gigante-tolox.jpg" alt="El Gigante de Tolox" style="width: 300px; height: auto; border: 1px solid var(--gold); opacity: 0.8;">
+</div>
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Hallazgo arqueológico · Málaga, España</div>
+    <h1 class="hero-title"><span class="accent">El</span> Gigante</h1>
+    <div class="hero-name">de Tolox</div>
+    <div class="hero-subtitle-line">Cueva · Sierra de las Nieves · Tolox, Málaga · 2026</div>
+    <p class="hero-desc">Espeleotema kárstico hallado en una cueva de la <strong>Sierra de las Nieves</strong>, Tolox. Una formación natural de <strong>carbonato cálcico</strong> que creció gota a gota durante milenios en las entrañas de la montaña.</p>
+    <div class="hero-cta-row">
+      <a href="#audio" class="btn-primary"><span>▶ Escuchar resumen</span></a>
+      <a href="#timeline" class="btn-ghost">Ver cronología</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-gradient"></div>
+    <div class="stone-container">
+      <div class="stone-glow"></div>
+      <svg class="stone-main-svg" viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="g1" cx="38%" cy="32%" r="70%"><stop offset="0%" stop-color="#e0c070"/><stop offset="40%" stop-color="#b08040"/><stop offset="75%" stop-color="#6b3e12"/><stop offset="100%" stop-color="#2d1a06"/></radialGradient>
+          <radialGradient id="g2" cx="55%" cy="55%" r="55%"><stop offset="0%" stop-color="#c4804a" stop-opacity="0.75"/><stop offset="100%" stop-color="#3d1f08" stop-opacity="0.4"/></radialGradient>
+          <filter id="sf"><feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="4" result="noise"/><feBlend in="SourceGraphic" in2="noise" mode="soft-light" result="b"/><feComposite in="b" in2="SourceGraphic" operator="in"/></filter>
+          <clipPath id="sc"><path d="M96 6 C118 4 148 14 162 42 C176 70 172 108 162 145 C150 184 130 222 100 250 C78 238 56 212 44 180 C30 148 26 110 34 74 C42 40 66 8 96 6Z"/></clipPath>
+        </defs>
+        <path d="M96 6 C118 4 148 14 162 42 C176 70 172 108 162 145 C150 184 130 222 100 250 C78 238 56 212 44 180 C30 148 26 110 34 74 C42 40 66 8 96 6Z" fill="url(#g1)" filter="url(#sf)"/>
+        <ellipse cx="115" cy="70" rx="32" ry="48" fill="url(#g2)" clip-path="url(#sc)" opacity="0.8"/>
+        <path d="M95 30 Q97 80 94 160 Q93 190 96 240" stroke="rgba(40,20,5,0.25)" stroke-width="8" clip-path="url(#sc)" fill="none"/>
+        <ellipse cx="76" cy="60" rx="16" ry="10" fill="rgba(255,230,150,0.1)" transform="rotate(-18 76 60)" clip-path="url(#sc)"/>
+        <circle cx="82" cy="105" r="3" fill="rgba(40,20,5,0.3)" clip-path="url(#sc)"/>
+        <circle cx="112" cy="135" r="2.5" fill="rgba(40,20,5,0.25)" clip-path="url(#sc)"/>
+        <circle cx="90" cy="155" r="2" fill="rgba(40,20,5,0.2)" clip-path="url(#sc)"/>
+      </svg>
+    </div>
+    <div class="hero-data-bar">
+      <div class="data-item"><div class="data-value">~50 cm</div><div class="data-label">Altura estimada</div></div>
+      <div class="data-item"><div class="data-value">+10 ka</div><div class="data-label">Antigüedad mínima</div></div>
+      <div class="data-item"><div class="data-value">1.101 m</div><div class="data-label">Sima GESM · Tolox</div></div>
+    </div>
+  </div>
+  <div class="hero-divider"></div>
+  <div class="scroll-hint"><div class="scroll-line"></div><div class="scroll-text">Explorar</div></div>
+</section>
+
+<!-- FOTOS -->
+<section class="photo-section" id="fotos">
+  <div class="photo-inner">
+    <div class="photo-header reveal">
+      <div class="section-label" style="justify-content:center;">Registro fotográfico</div>
+      <h2 class="section-heading" style="text-align:center;">La pieza<br>en <em>detalle</em></h2>
+    </div>
+    <div class="photo-grid">
+      <div class="photo-frame" id="frame1">
+        <input type="file" class="photo-upload-input" accept="image/*" onchange="loadPhoto(this,'frame1','img1','rm1')">
+        <img id="img1" class="photo-loaded" alt="Vista 1">
+        <button id="rm1" class="photo-remove-btn" onclick="removePhoto('frame1','img1','rm1')">×</button>
+        <div class="photo-frame-inner">
+          <span class="photo-placeholder-icon">📷</span>
+          <div class="photo-placeholder-text">Añadir foto · Vista frontal</div>
+        </div>
+        <div class="photo-label">Vista 1 · El Gigante de Tolox</div>
+      </div>
+      <div class="photo-frame" id="frame2">
+        <input type="file" class="photo-upload-input" accept="image/*" onchange="loadPhoto(this,'frame2','img2','rm2')">
+        <img id="img2" class="photo-loaded" alt="Vista 2">
+        <button id="rm2" class="photo-remove-btn" onclick="removePhoto('frame2','img2','rm2')">×</button>
+        <div class="photo-frame-inner">
+          <span class="photo-placeholder-icon">📷</span>
+          <div class="photo-placeholder-text">Añadir foto · Vista lateral</div>
+        </div>
+        <div class="photo-label">Vista 2 · El Gigante de Tolox</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIO -->
+<section class="audio-section" id="audio">
+  <div class="audio-inner">
+    <div class="audio-text-col reveal">
+      <div class="section-label">Narración</div>
+      <h2 class="section-heading">La historia<br>en <em>tu voz</em></h2>
+      <p class="audio-intro">Una estalagmita que creció en silencio durante milenios en una cueva de Tolox, <strong>Sierra de las Nieves</strong>. Escucha su historia de calizas, agua y tiempo.</p>
+    </div>
+    <div class="player-wrap reveal reveal-delay-1">
+      <div class="player-eyebrow">Audio documental · Español coloquial</div>
+      <div class="waveform" id="waveform"></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-row">
+        <span id="timeElapsed">0:00</span>
+        <span id="statusLabel">Listo para reproducir</span>
+        <span>~3:00</span>
+      </div>
+      <div class="controls-row">
+        <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+        <button class="stop-btn" onclick="stopAudio()">■</button>
+        <div class="status-label" id="statusText">Pulsa play para comenzar</div>
+      </div>
+      <!-- ⚠️ SOLO ESTAS TRES VELOCIDADES — NO MODIFICAR -->
+      <div class="speed-row">
+        <span class="speed-label">Velocidad</span>
+        <button class="spd on" onclick="setSpeed(1.0,this)">1×</button>
+        <button class="spd"    onclick="setSpeed(1.5,this)">1.5×</button>
+        <button class="spd"    onclick="setSpeed(2.0,this)">2×</button>
+      </div>
+      <button class="transcript-toggle" onclick="toggleTranscript()">
+        <span>📜 Leer guión completo</span><span id="tArrow">+</span>
+      </button>
+      <div class="transcript-body" id="transcriptBody">
+        <div class="transcript-text" id="transcriptText"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section" id="timeline">
+  <div class="timeline-inner">
+    <div class="timeline-header reveal">
+      <div class="section-label" style="justify-content:center;">Cronología</div>
+      <h2 class="section-heading" style="text-align:center;">200 millones de años<br>en <em>una línea</em></h2>
+    </div>
+    <div class="tl-grid">
+
+      <!-- Fila 1 -->
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Jurásico</div>
+        <div class="tl-date">Hace 200 M.a.</div>
+        <div class="tl-desc">El fondo del mar de Tethys cubre lo que hoy es la Sierra de las Nieves. Millones de organismos marinos depositan sus conchas: nace la caliza jurásica, el esqueleto de la montaña que creó a El Gigante.</div>
+        <span class="tl-site">Calizas y dolomías · Sierra Blanca</span>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal"></div>
+
+      <!-- Fila 2 -->
+      <div class="tl-item left reveal"></div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Mioceno · Orogenia Alpina</div>
+        <div class="tl-date">Hace ~25 M.a.</div>
+        <div class="tl-desc">La colisión entre las placas africana y euroasiática eleva la Cordillera Bética. La caliza se agrieta; el agua comienza a labrar el karst. Nacen las primeras cuevas y simas bajo Tolox.</div>
+        <span class="tl-site">Karst de la Sierra de las Nieves · el mayor de Andalucía</span>
+      </div>
+
+      <!-- Fila 3 -->
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Paleolítico Medio</div>
+        <div class="tl-date">~300.000 a.C.</div>
+        <div class="tl-desc">Los neandertales pueblan las cuevas de Málaga. El sur peninsular es uno de sus últimos refugios europeos. Las cuevas de la sierra son hogar, santuario y cementerio a la vez.</div>
+        <span class="tl-site">Cueva de Nerja · Cueva de Ardales</span>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal"></div>
+
+      <!-- Fila 4 -->
+      <div class="tl-item left reveal"></div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Neolítico</div>
+        <div class="tl-date">~6000 a.C.</div>
+        <div class="tl-desc">Los primeros agricultores y pastores se asientan en las cuevas de Tolox. Cerámica y utensilios líticos confirman su presencia. El río de los Horcajos les da agua y protección.</div>
+        <span class="tl-site">Cueva de la Tinaja · 1er yacimiento de Tolox</span>
+      </div>
+
+      <!-- Fila 5 -->
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Fenicios</div>
+        <div class="tl-date">~700 a.C.</div>
+        <div class="tl-desc">Los fenicios colonizan la costa malagueña y penetran hacia el interior. Tolox recibe su nombre del vocablo bástulo-fenicio Tulos, que significa monte alto o roca alta. Se funda el primer asentamiento.</div>
+        <span class="tl-site">Materiales fenicios · Término municipal de Tolox</span>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal"></div>
+
+      <!-- Fila 6 -->
+      <div class="tl-item left reveal"></div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Época Romana</div>
+        <div class="tl-date">~200 a.C. – 400 d.C.</div>
+        <div class="tl-desc">Roma conquista Hispania y ocupa la fortaleza de Tolox. En 1770 se descubre una lápida funeraria en latín que atestigua el entierro de un hijo de patricio romano en estas tierras.</div>
+        <span class="tl-site">Lápida latina · Hallada en Tolox en 1770</span>
+      </div>
+
+      <!-- Fila 7 -->
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Al-Ándalus</div>
+        <div class="tl-date">883 d.C.</div>
+        <div class="tl-desc">Omar Ben Hafsun, el gran rebelde muladí, toma el castillo de Tolox y lo convierte en su principal bastión contra el Califato de Córdoba. Tolox se convierte en uno de los puntos más estratégicos del reino nazarí.</div>
+        <span class="tl-site">Murallas del Castillo de Tolox · aún visibles</span>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal"></div>
+
+      <!-- Fila 8 -->
+      <div class="tl-item left reveal"></div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Reconquista</div>
+        <div class="tl-date">1485 d.C.</div>
+        <div class="tl-desc">Tolox se rinde a los Reyes Católicos. La convivencia entre moriscos y cristianos acaba con la expulsión de 1569. La zona es repoblada por castellanos y gallegos. Una nueva era comienza.</div>
+        <span class="tl-site">Barrio de la Rinconada del Castillo · Tolox</span>
+      </div>
+
+      <!-- Fila 9 -->
+      <div class="tl-item left reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Era Moderna</div>
+        <div class="tl-date">1869 d.C.</div>
+        <div class="tl-desc">Se inaugura el Balneario de Fuente Amargosa, único en Europa donde el tratamiento se basa en gases medicinales, no en el agua. Figuras como Primo de Rivera o el torero Lagartijo acuden a sus aguas.</div>
+        <span class="tl-site">Balneario de Tolox · en activo hasta hoy</span>
+      </div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal"></div>
+
+      <!-- Fila 10 -->
+      <div class="tl-item left reveal"></div>
+      <div class="tl-line"></div>
+      <div class="tl-item right reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-era">Hallazgo · Cueva de Tolox</div>
+        <div class="tl-date">2016 · El Gigante</div>
+        <div class="tl-desc">En una cueva del término municipal de Tolox, alguien encuentra esta estalagmita de forma imponente y color dorado. Una formación de milenios que llevaba en silencio esperando ser descubierta.</div>
+        <span class="tl-site">Cueva local · Sierra de las Nieves</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CURIOSIDADES -->
+<section class="facts-section" id="curiosidades">
+  <div class="facts-inner">
+    <div class="facts-header reveal">
+      <div class="section-label">Curiosidades</div>
+      <h2 class="section-heading">Lo que no sabías<br>de <em>Tolox</em></h2>
+    </div>
+    <div class="facts-grid">
+
+      <div class="fact-card reveal">
+        <span class="fact-icon">🕳️</span>
+        <div class="fact-num">1.101 m</div>
+        <div class="fact-title">La sima más profunda de Andalucía</div>
+        <div class="fact-body">La Sima GESM, en Tolox, desciende 1.101 metros bajo tierra. Es la sima más profunda de toda Andalucía y una de las más profundas de España. Los espeleólogos del mundo entero vienen hasta aquí para explorarla.</div>
+      </div>
+
+      <div class="fact-card reveal reveal-delay-1">
+        <span class="fact-icon">💧</span>
+        <div class="fact-num">1869</div>
+        <div class="fact-title">Único balneario de gases en Europa</div>
+        <div class="fact-body">El Balneario de Fuente Amargosa es el único en Europa cuyo tratamiento se basa en los gases que emanan del manantial, no en el agua. Inaugurado en 1869, ha recibido a políticos, toreros y artistas durante siglos.</div>
+      </div>
+
+      <div class="fact-card reveal reveal-delay-2">
+        <span class="fact-icon">🌿</span>
+        <div class="fact-num">3.000 ha</div>
+        <div class="fact-title">El mayor pinsapar del mundo</div>
+        <div class="fact-body">La Sierra de las Nieves alberga el bosque de pinsapos más extenso del planeta: más de 3.000 hectáreas de este abeto relicto de la era glacial, exclusivo del sur de España y del norte de Marruecos.</div>
+      </div>
+
+      <div class="fact-card reveal">
+        <span class="fact-icon">🏔️</span>
+        <div class="fact-num">1.919 m</div>
+        <div class="fact-title">El techo de Málaga</div>
+        <div class="fact-body">El Pico Torrecilla, en el término municipal de Tolox, es el segundo pico más alto de la provincia de Málaga con 1.919 metros. Desde su cima se ven el Mediterráneo, Gibraltar y el norte de África en días claros.</div>
+      </div>
+
+      <div class="fact-card reveal reveal-delay-1">
+        <span class="fact-icon">🏺</span>
+        <div class="fact-num">~6000 a.C.</div>
+        <div class="fact-title">Neolítico en la Cueva de la Tinaja</div>
+        <div class="fact-body">A apenas 4 kilómetros del pueblo, la Cueva de la Tinaja guarda restos arqueológicos neolíticos que confirman la presencia humana en estas tierras desde hace más de ocho mil años. Tolox lleva milenios habitado.</div>
+      </div>
+
+      <div class="fact-card reveal reveal-delay-2">
+        <span class="fact-icon">🥛</span>
+        <div class="fact-num">1 día</div>
+        <div class="fact-title">El Día de los Polvos</div>
+        <div class="fact-body">El martes anterior al Miércoles de Ceniza, todos los vecinos de Tolox se tiran harina unos a otros en las calles. Esta singular fiesta de Carnaval rememora la histórica convivencia y rivalidad entre moriscos y cristianos.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ANÁLISIS -->
+<section class="analysis-section" id="analisis">
+  <div class="analysis-inner">
+    <div class="reveal">
+      <div class="section-label">Dictamen</div>
+      <h2 class="section-heading">¿Qué es<br><em>exactamente</em>?</h2>
+      <div class="verdict-box">
+        <div class="verdict-type">Espeleotema Calcítico</div>
+        <div class="verdict-subtitle">Estalagmita kárstica · Alta certeza</div>
+        <p class="verdict-desc">Formación natural de carbonato cálcico (calcita) crecida en el interior de una cueva de la Sierra de las Nieves. El agua rica en CO₂ disolvió la caliza jurásica durante milenios y la precipitó gota a gota dentro de la cueva, construyendo esta columna de forma subantropomorfa. Las manchas rojizas son óxidos de hierro disueltos en el agua durante su filtración. No se detectan indicios de talla humana prehistórica.</p>
+      </div>
+      <div class="action-callout">
+        <div class="callout-title">⚠ Recomendación arqueológica</div>
+        <p class="callout-text">Esta pieza procede de una cueva del Parque Nacional Sierra de las Nieves (espacio protegido). Contacta con el Ayuntamiento de Tolox (952 487 097), la Delegación de Cultura de la Junta de Andalucía en Málaga, o el Museo Arqueológico de Málaga para una valoración presencial. No devuelvas la pieza a la cueva hasta recibir orientación profesional.</p>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="properties-list">
+        <div class="prop-item"><span class="prop-key">Tipo de roca</span><span class="prop-val">Espeleotema (estalagmita)</span></div>
+        <div class="prop-item"><span class="prop-key">Mineral principal</span><span class="prop-val">Carbonato cálcico (calcita)</span></div>
+        <div class="prop-item"><span class="prop-key">Color base</span><span class="prop-val">Ocre-beige con manchas ferrosas</span></div>
+        <div class="prop-item"><span class="prop-key">Textura</span><span class="prop-val">Nodular y vesicular · bandas de crecimiento</span></div>
+        <div class="prop-item"><span class="prop-key">Altura estimada</span><span class="prop-val">~45–55 cm</span></div>
+        <div class="prop-item"><span class="prop-key">Anchura máxima</span><span class="prop-val">~20–24 cm</span></div>
+        <div class="prop-item"><span class="prop-key">Morfología</span><span class="prop-val">Subantropomorfa · columnar</span></div>
+        <div class="prop-item"><span class="prop-key">Canal central</span><span class="prop-val">Fractura o plano de crecimiento natural</span></div>
+        <div class="prop-item"><span class="prop-key">Antigüedad mínima</span><span class="prop-val">10.000 – 200.000 años</span></div>
+        <div class="prop-item"><span class="prop-key">Lugar de hallazgo</span><span class="prop-val">Cueva · Tolox, Sierra de las Nieves</span></div>
+        <div class="prop-item"><span class="prop-key">Modificación humana</span><span class="prop-val">Soporte de lámpara (contemporáneo)</span></div>
+        <div class="prop-item"><span class="prop-key">Hipótesis principal</span><span class="prop-val">Estalagmita natural · ~90% probabilidad</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">El Gigante de Tolox</div>
+        <div class="footer-brand-sub">Hallazgo arqueológico · 2026</div>
+        <p class="footer-desc">Documentación arqueológica de un espeleotema kárstico hallado en una cueva del término municipal de Tolox, en el corazón del Parque Nacional Sierra de las Nieves, Málaga.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Instituciones</div>
+        <ul class="footer-links">
+          <li><a href="https://www.tolox.es/" target="_blank" rel="noopener">Ayuntamiento de Tolox</a></li>
+          <li><a href="https://www.juntadeandalucia.es/organismos/culturaypatrimoniohistorico.html" target="_blank" rel="noopener">Junta de Andalucía · Cultura</a></li>
+          <li><a href="https://www.museosdeandalucia.es" target="_blank" rel="noopener">Museos de Andalucía</a></li>
+          <li><a href="https://www.malaga.es/" target="_blank" rel="noopener">Diputación de Málaga</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Historia de Tolox</div>
+        <ul class="footer-links">
+          <li><a href="https://www.tolox.es/230/historia" target="_blank" rel="noopener">Historia oficial · tolox.es</a></li>
+          <li><a href="https://www.toloxturismo.com/en/history-of-tolox/" target="_blank" rel="noopener">Tolox Turismo</a></li>
+          <li><a href="https://www.i-sierradelasnieves.com/tolox/" target="_blank" rel="noopener">Sierra de las Nieves</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Arqueología y Karst</div>
+        <ul class="footer-links">
+          <li><a href="https://rutasarqueologicas.malaga.eu" target="_blank" rel="noopener">Rutas arqueológicas Málaga</a></li>
+          <li><a href="https://www.malaga.es/en/laprovincia/8797/com1_md3_cd-45648/karst-in-the-sierra-de-las-nieves" target="_blank" rel="noopener">Karst Sierra de las Nieves</a></li>
+          <li><a href="https://parquesnacionales.cnig.es/en/sierra-de-las-nieves" target="_blank" rel="noopener">Parque Nacional · CNIG</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 El Gigante de Tolox — Documentación arqueológica sin ánimo de lucro</div>
+      <div class="footer-badge">Tolox · Málaga · Andalucía</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── Cursor ─── */
+const dot=document.getElementById('dot'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function animC(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC);})();
+
+/* ─── Scroll reveal ─── */
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ─── Waveform ─── */
+const wf=document.getElementById('waveform');
+[20,35,55,45,70,60,80,65,50,75,85,60,45,70,55,40,65,80,70,50,85,60,45,75,55,65,80,45,60,70,55,40,75,65,50].forEach((h,i)=>{
+  const b=document.createElement('div');b.className='wave-bar';b.style.height=h+'px';
+  b.style.setProperty('--dur',(0.6+Math.random()*.8).toFixed(2)+'s');
+  b.style.setProperty('--delay',(i*.04).toFixed(2)+'s');wf.appendChild(b);
+});
+
+/* ─── Audio script ─── */
+const script=`Imagínate esto: estás en una cueva de Tolox, ahí en plena Sierra de las Nieves, y de repente te encuentras con esto. Una piedra que se levanta imponente, casi como si te estuviera vigilando desde hace miles de años. Pues así nació El Gigante de Tolox.
+
+Tolox es un pueblo con una historia que te flipa. Su nombre viene del bástulo Tulos, que significa literalmente monte alto o roca alta. Y te juro que cuando lo visitas, entiendes por qué. Es un pueblo blanco encaramado en la sierra, rodeado de pinsapos centenarios, con el Pico Torrecilla ahí al fondo, a casi 1.919 metros. El techo de Málaga. Y justo debajo de sus pies, la Sima GESM baja 1.101 metros hacia el interior de la tierra. Que sí, mil cien metros para abajo. La sima más profunda de toda Andalucía. Eso es una pasada.
+
+Pero volvamos a nuestra piedra. Porque El Gigante no es una piedra cualquiera. Es un espeleotema, que viene a ser una formación que crece dentro de las cuevas, gota a gota, durante miles y miles de años. Fíjate qué nivel: imagínate el agua de lluvia filtrándose por la caliza de la sierra, cargándose de minerales, y luego goteando dentro de la cueva. Cada gota deja un poquito de carbonato cálcico. Un poquito hoy, un poquito mañana, durante diez mil años o más. Y así crece El Gigante. Gota a gota. Sin prisa. Sin parar. Te lo juro, cuando lo ves en persona se te ponen los pelos de punta.
+
+El color ocre y esas manchas rojizas que ves por toda la superficie, eso son óxidos de hierro. El agua que formó esta pieza llevaba hierro disuelto, y al precipitarse junto con el calcio, le dio ese tono cálido, dorado, casi como de miel antigua con vetas de canela. Y la textura rugosa y con burbujitas es típica de los espeleotemas ricos en calcita, la misma roca que forma las estalactitas que seguro has visto en fotos de cuevas. La naturaleza como la mejor escultora del mundo, fíjate qué nivel.
+
+Ahora, te pregunto algo. ¿Te imaginas quién pudo haber pasado por esa cueva a lo largo de los siglos? Pues mira, en Tolox hay evidencia de presencia humana desde el Neolítico, hace más de seis mil años. La Cueva de la Tinaja, a cuatro kilómetros del pueblo, guarda restos de aquellos primeros pobladores. Después llegaron los fenicios, que probablemente fundaron el asentamiento original y le dieron el nombre. Luego los romanos, que dejaron incluso una lápida funeraria que apareció en el año 1770. Y después Omar Ben Hafsun, que en el 883 convirtió Tolox en uno de sus principales bastiones contra el Califato de Córdoba. Y con los Reyes Católicos, la reconquista en 1485. Cada civilización, pasando por el mismo sitio donde el Gigante ya llevaba creciendo milenios en la oscuridad.
+
+La curiosidad geológica más alucinante de la zona, aparte de nuestra estalagmita, es que la Sierra de las Nieves también alberga el mayor macizo de peridotitas del mundo. Esas rocas ígneas rojizas y oscuras que ves al caminar por la sierra parda. Solo hay otro comparable en los Urales rusos. Aquí, en Tolox, el suelo te puede dar calizas blancas y peridotitas pardas en cuestión de metros. Eso es única en el planeta.
+
+Y El Gigante, en concreto, lo más probable es que sea una estalagmita o un fragmento de columna de cueva, formada de manera completamente natural. No hay señales claras de que ninguna mano prehistórica la tallara. La forma tan vertical, tan casi humana que tiene, eso es pura obra de la naturaleza. Que a veces, te digo yo, la naturaleza es el mejor artista que ha existido.
+
+Y para terminar: si tienes esta pieza en casa, lo ideal sería ponerse en contacto con el Ayuntamiento de Tolox o con la Delegación de Cultura de la Junta de Andalucía en Málaga, y dejar que alguien la valore presencialmente. Porque El Gigante lleva miles de años esperando. Se merece que alguien le diga exactamente quién es y de dónde viene.`;
+
+document.getElementById('transcriptText').textContent=script;
+
+/* ─── Player ─── */
+let utter=null,playing=false,paused=false,speed=1.0;
+let startTs=null,elapsed=0,progInt=null;
+const totalDur=185000;
+
+function togglePlay(){if(!window.speechSynthesis)return;if(playing&&!paused)pauseAudio();else if(paused)resumeAudio();else startAudio();}
+
+function startAudio(){
+  window.speechSynthesis.cancel();
+  utter=new SpeechSynthesisUtterance(script);
+  utter.lang='es-ES';utter.rate=speed;utter.pitch=1.0;
+  const voices=window.speechSynthesis.getVoices();
+  const v=voices.find(v=>v.lang.startsWith('es')&&(v.name.includes('Monica')||v.name.includes('Elvira')||v.name.includes('Monica')||v.name.includes('Paulina')||v.name.includes('Female')))||voices.find(v=>v.lang.startsWith('es'));
+  if(v)utter.voice=v;
+  utter.onstart=()=>{playing=true;paused=false;elapsed=0;startTs=Date.now();document.getElementById('playBtn').textContent='⏸';document.getElementById('playBtn').classList.add('is-playing');document.getElementById('waveform').classList.add('playing');document.getElementById('statusText').textContent='Reproduciendo...';startProg();};
+  utter.onend=()=>{playing=false;paused=false;document.getElementById('playBtn').textContent='▶';document.getElementById('playBtn').classList.remove('is-playing');document.getElementById('waveform').classList.remove('playing');document.getElementById('statusText').textContent='✓ Completado';document.getElementById('progressFill').style.width='100%';clearInterval(progInt);};
+  utter.onerror=()=>stopAudio();
+  window.speechSynthesis.speak(utter);
+}
+
+function pauseAudio(){window.speechSynthesis.pause();playing=false;paused=true;elapsed+=Date.now()-startTs;document.getElementById('playBtn').textContent='▶';document.getElementById('playBtn').classList.remove('is-playing');document.getElementById('waveform').classList.remove('playing');document.getElementById('statusText').textContent='⏸ Pausado';clearInterval(progInt);}
+function resumeAudio(){window.speechSynthesis.resume();playing=true;paused=false;startTs=Date.now();document.getElementById('playBtn').textContent='⏸';document.getElementById('playBtn').classList.add('is-playing');document.getElementById('waveform').classList.add('playing');document.getElementById('statusText').textContent='Reproduciendo...';startProg();}
+function stopAudio(){window.speechSynthesis.cancel();playing=false;paused=false;elapsed=0;startTs=null;document.getElementById('playBtn').textContent='▶';document.getElementById('playBtn').classList.remove('is-playing');document.getElementById('waveform').classList.remove('playing');document.getElementById('progressFill').style.width='0%';document.getElementById('statusText').textContent='Pulsa play para comenzar';document.getElementById('statusLabel').textContent='Listo para reproducir';document.getElementById('timeElapsed').textContent='0:00';clearInterval(progInt);}
+function startProg(){clearInterval(progInt);const adj=totalDur/speed;progInt=setInterval(()=>{const total=elapsed+(Date.now()-startTs);const pct=Math.min((total/adj)*100,98);document.getElementById('progressFill').style.width=pct+'%';const s=Math.floor(total/1000);document.getElementById('timeElapsed').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');const r=Math.max(0,Math.round((adj-total)/1000));document.getElementById('statusLabel').textContent='~'+Math.floor(r/60)+':'+String(r%60).padStart(2,'0')+' restantes';},400);}
+/* ⚠️ setSpeed solo acepta 1.0, 1.5 y 2.0 */
+function setSpeed(s,btn){speed=s;document.querySelectorAll('.spd').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(playing||paused)stopAudio();}
+function toggleTranscript(){const b=document.getElementById('transcriptBody'),a=document.getElementById('tArrow');b.classList.toggle('open');a.textContent=b.classList.contains('open')?'−':'+';}
+
+/* ─── Photo loader ─── */
+function loadPhoto(input,frameId,imgId,rmId){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.getElementById(imgId);
+    img.src=e.target.result;img.style.display='block';
+    const rm=document.getElementById(rmId);rm.style.display='flex';
+    document.querySelector('#'+frameId+' .photo-frame-inner').style.opacity='0';
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(frameId,imgId,rmId){
+  const img=document.getElementById(imgId);img.src='';img.style.display='none';
+  document.getElementById(rmId).style.display='none';
+  document.querySelector('#'+frameId+' .photo-frame-inner').style.opacity='1';
+  document.querySelector('#'+frameId+' .photo-upload-input').value='';
+}
+
+window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+</script>
+</body>
+</html>

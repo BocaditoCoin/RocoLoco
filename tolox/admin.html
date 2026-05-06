@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · Roco Arqueológico</title>
+<!-- SEO bloqueado — página privada -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:       #c9a84c;
+  --gold-light: #e8cc80;
+  --gold-dim:   #7a5f28;
+  --obsidian:   #0d0b08;
+  --charcoal:   #161210;
+  --earth:      #1e1710;
+  --parchment:  #f0e6c8;
+  --green:      #4a8c5c;
+  --green-dim:  #2d5438;
+  --red:        #8c4a4a;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans:  'Josefin Sans', sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--obsidian);
+  color:var(--parchment);
+  font-family:var(--sans);
+  font-weight:300;
+  min-height:100vh;
+}
+
+/* ── Login ── */
+#loginScreen {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(ellipse at 50% 50%, rgba(122,63,30,.12) 0%, transparent 65%);
+}
+.login-box {
+  width:100%; max-width:420px; padding:60px 52px;
+  background:rgba(22,18,12,.95);
+  border:1px solid rgba(201,168,76,.15);
+  position:relative;
+}
+.login-box::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold) 40%,var(--gold-light) 60%,transparent);
+  opacity:.7;
+}
+.login-eyebrow {
+  font-size:9px; font-weight:200; letter-spacing:.5em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:12px;
+  display:flex; align-items:center; gap:12px;
+}
+.login-eyebrow::before { content:''; width:20px; height:1px; background:var(--gold); }
+.login-title {
+  font-family:var(--serif); font-size:36px; font-weight:300; line-height:1.1;
+  margin-bottom:40px;
+}
+.login-title em { font-style:italic; color:var(--gold-light); }
+.field { margin-bottom:24px; }
+.field label {
+  display:block; font-size:9px; font-weight:200; letter-spacing:.4em;
+  text-transform:uppercase; color:rgba(201,168,76,.5); margin-bottom:10px;
+}
+.field input {
+  width:100%; padding:14px 18px;
+  background:rgba(13,11,8,.8); border:1px solid rgba(201,168,76,.15);
+  color:var(--parchment); font-family:var(--sans); font-size:14px; font-weight:300;
+  letter-spacing:.05em; outline:none; transition:border-color .3s;
+}
+.field input:focus { border-color:rgba(201,168,76,.5); }
+.field input::placeholder { color:rgba(240,230,200,.2); }
+.btn-login {
+  width:100%; padding:16px; margin-top:8px;
+  background:var(--gold); color:var(--obsidian);
+  border:none; cursor:pointer;
+  font-family:var(--sans); font-size:11px; font-weight:300;
+  letter-spacing:.3em; text-transform:uppercase;
+  transition:all .3s; position:relative; overflow:hidden;
+}
+.btn-login::after {
+  content:''; position:absolute; inset:0;
+  background:var(--gold-light); transform:translateX(-100%); transition:transform .4s;
+}
+.btn-login:hover::after { transform:translateX(0); }
+.btn-login span { position:relative; z-index:1; }
+.login-error {
+  margin-top:16px; padding:12px 16px;
+  background:rgba(140,74,74,.15); border:1px solid rgba(140,74,74,.3);
+  color:rgba(255,180,180,.7); font-size:12px; font-weight:200;
+  letter-spacing:.1em; display:none;
+}
+.login-error.show { display:block; }
+
+/* ── Panel principal ── */
+#adminPanel { display:none; min-height:100vh; }
+
+/* Header */
+.admin-header {
+  position:sticky; top:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:20px 48px;
+  background:rgba(13,11,8,.97); border-bottom:1px solid rgba(201,168,76,.1);
+  backdrop-filter:blur(4px);
+}
+.admin-brand {
+  font-size:10px; font-weight:200; letter-spacing:.45em; text-transform:uppercase;
+  color:var(--gold);
+}
+.admin-brand span { color:rgba(201,168,76,.35); }
+.btn-logout {
+  font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase;
+  color:rgba(240,230,200,.3); background:none; border:1px solid rgba(240,230,200,.1);
+  padding:8px 18px; cursor:pointer; transition:all .3s;
+}
+.btn-logout:hover { color:var(--gold); border-color:rgba(201,168,76,.3); }
+
+/* Layout */
+.admin-body { display:grid; grid-template-columns:400px 1fr; min-height:calc(100vh - 65px); }
+
+/* ── Panel izquierdo — Formulario ── */
+.panel-form {
+  padding:48px 40px; border-right:1px solid rgba(201,168,76,.08);
+  background:var(--charcoal); position:sticky; top:65px; height:calc(100vh - 65px);
+  overflow-y:auto;
+}
+.panel-form::-webkit-scrollbar { width:3px; }
+.panel-form::-webkit-scrollbar-track { background:transparent; }
+.panel-form::-webkit-scrollbar-thumb { background:rgba(201,168,76,.2); border-radius:2px; }
+
+.panel-title {
+  font-size:9px; font-weight:200; letter-spacing:.5em; text-transform:uppercase;
+  color:var(--gold); display:flex; align-items:center; gap:12px; margin-bottom:28px;
+}
+.panel-title::before { content:''; width:20px; height:1px; background:var(--gold); }
+
+.form-heading {
+  font-family:var(--serif); font-size:30px; font-weight:300; margin-bottom:36px;
+  line-height:1.2;
+}
+.form-heading em { font-style:italic; color:var(--gold-light); }
+
+.f-group { margin-bottom:22px; }
+.f-label {
+  display:block; font-size:8px; font-weight:200; letter-spacing:.4em;
+  text-transform:uppercase; color:rgba(201,168,76,.45); margin-bottom:8px;
+}
+.f-req { color:rgba(201,168,76,.7); }
+.f-input, .f-textarea {
+  width:100%; padding:12px 16px;
+  background:rgba(13,11,8,.7); border:1px solid rgba(201,168,76,.12);
+  color:var(--parchment); font-family:var(--sans); font-size:13px; font-weight:300;
+  outline:none; transition:border-color .3s; letter-spacing:.03em;
+}
+.f-input:focus, .f-textarea:focus { border-color:rgba(201,168,76,.45); }
+.f-input::placeholder, .f-textarea::placeholder { color:rgba(240,230,200,.18); }
+.f-textarea { resize:vertical; min-height:90px; line-height:1.6; }
+.f-hint {
+  margin-top:6px; font-size:9px; font-weight:200; letter-spacing:.05em;
+  color:rgba(240,230,200,.2); line-height:1.5;
+}
+
+.f-sep {
+  height:1px; background:rgba(201,168,76,.08); margin:28px 0;
+}
+
+/* Botones */
+.btn-add {
+  width:100%; padding:16px;
+  background:linear-gradient(135deg, var(--gold-light), var(--gold), #a87820);
+  color:var(--obsidian); border:none; cursor:pointer;
+  font-family:var(--sans); font-size:11px; font-weight:400;
+  letter-spacing:.25em; text-transform:uppercase;
+  transition:all .3s; position:relative; overflow:hidden;
+  margin-bottom:12px;
+}
+.btn-add:hover { box-shadow:0 4px 24px rgba(201,168,76,.35); }
+.btn-add:active { transform:scale(.98); }
+
+.btn-clear {
+  width:100%; padding:12px;
+  background:transparent; color:rgba(240,230,200,.25);
+  border:1px solid rgba(240,230,200,.08); cursor:pointer;
+  font-family:var(--sans); font-size:10px; font-weight:200;
+  letter-spacing:.25em; text-transform:uppercase;
+  transition:all .3s;
+}
+.btn-clear:hover { color:rgba(240,230,200,.5); border-color:rgba(240,230,200,.2); }
+
+/* Notificaciones */
+.notif {
+  padding:14px 18px; margin-bottom:20px; font-size:12px; font-weight:200;
+  letter-spacing:.08em; line-height:1.5; display:none;
+}
+.notif.show { display:block; }
+.notif-ok { background:rgba(74,140,92,.12); border:1px solid rgba(74,140,92,.3); color:rgba(180,255,200,.7); }
+.notif-err { background:rgba(140,74,74,.12); border:1px solid rgba(140,74,74,.3); color:rgba(255,180,180,.7); }
+
+/* ── Panel derecho — Lista de posts ── */
+.panel-list { padding:48px 48px; background:var(--obsidian); overflow-y:auto; }
+
+.list-header {
+  display:flex; align-items:baseline; justify-content:space-between;
+  margin-bottom:36px;
+}
+.list-title {
+  font-family:var(--serif); font-size:28px; font-weight:300;
+}
+.list-title em { font-style:italic; color:var(--gold-light); }
+.list-count {
+  font-size:9px; font-weight:200; letter-spacing:.35em; text-transform:uppercase;
+  color:rgba(201,168,76,.4);
+}
+
+/* Instrucciones */
+.instructions {
+  padding:24px 28px; margin-bottom:36px;
+  background:rgba(201,168,76,.04); border:1px solid rgba(201,168,76,.12);
+  border-left:3px solid var(--gold);
+}
+.inst-title {
+  font-size:9px; font-weight:200; letter-spacing:.4em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:12px;
+}
+.inst-body {
+  font-size:13px; font-weight:200; line-height:1.8; color:rgba(240,230,200,.5);
+}
+.inst-body strong { color:var(--parchment); font-weight:300; }
+.inst-body code {
+  font-family:monospace; font-size:12px;
+  background:rgba(201,168,76,.08); padding:2px 6px;
+  color:var(--gold-light); border-radius:2px;
+}
+
+/* Código generado */
+.code-output {
+  margin-top:28px; padding:0;
+  background:rgba(13,11,8,.9); border:1px solid rgba(201,168,76,.15);
+  display:none;
+}
+.code-output.show { display:block; }
+.code-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 20px; border-bottom:1px solid rgba(201,168,76,.1);
+  background:rgba(201,168,76,.04);
+}
+.code-label {
+  font-size:9px; font-weight:200; letter-spacing:.4em; text-transform:uppercase;
+  color:var(--gold);
+}
+.btn-copy {
+  font-size:9px; font-weight:200; letter-spacing:.25em; text-transform:uppercase;
+  color:rgba(201,168,76,.6); background:none; border:1px solid rgba(201,168,76,.2);
+  padding:6px 14px; cursor:pointer; transition:all .2s;
+}
+.btn-copy:hover { color:var(--gold); border-color:rgba(201,168,76,.5); }
+.code-block {
+  padding:20px; overflow-x:auto;
+  font-family:monospace; font-size:12px; line-height:1.7;
+  color:rgba(201,168,76,.8); white-space:pre;
+}
+
+/* Lista de posts */
+#postsList { display:flex; flex-direction:column; gap:2px; }
+.post-item {
+  display:grid; grid-template-columns:1fr auto;
+  align-items:center; gap:24px;
+  padding:20px 24px; background:rgba(22,18,12,.7);
+  border:1px solid rgba(201,168,76,.08); transition:border-color .3s;
+}
+.post-item:hover { border-color:rgba(201,168,76,.2); }
+.post-item-title {
+  font-family:var(--serif); font-size:20px; font-weight:300;
+  color:var(--parchment); margin-bottom:4px;
+}
+.post-item-meta {
+  font-size:9px; font-weight:200; letter-spacing:.25em; text-transform:uppercase;
+  color:rgba(201,168,76,.4); display:flex; align-items:center; gap:16px;
+}
+.post-item-file {
+  font-family:monospace; font-size:11px;
+  color:rgba(201,168,76,.4); margin-top:6px;
+}
+.post-item-actions { display:flex; gap:8px; }
+.btn-del {
+  font-size:9px; font-weight:200; letter-spacing:.2em;
+  background:none; color:rgba(140,74,74,.6); border:1px solid rgba(140,74,74,.2);
+  padding:6px 12px; cursor:pointer; transition:all .2s;
+}
+.btn-del:hover { color:rgba(255,120,120,.8); border-color:rgba(140,74,74,.5); }
+.btn-preview {
+  font-size:9px; font-weight:200; letter-spacing:.2em;
+  background:none; color:rgba(201,168,76,.5); border:1px solid rgba(201,168,76,.15);
+  padding:6px 12px; cursor:pointer; transition:all .2s;
+  text-decoration:none; display:inline-block;
+}
+.btn-preview:hover { color:var(--gold); border-color:rgba(201,168,76,.4); }
+
+.empty-list {
+  text-align:center; padding:60px 40px;
+  border:1px dashed rgba(201,168,76,.08);
+}
+.empty-list-title {
+  font-family:var(--serif); font-size:24px; font-weight:300;
+  color:rgba(240,230,200,.3); margin-bottom:8px;
+}
+.empty-list-sub {
+  font-size:9px; font-weight:200; letter-spacing:.3em; text-transform:uppercase;
+  color:rgba(201,168,76,.2);
+}
+
+@media(max-width:900px){
+  .admin-body { grid-template-columns:1fr; }
+  .panel-form { position:static; height:auto; }
+  .admin-header { padding:18px 24px; }
+  .panel-form { padding:36px 24px; }
+  .panel-list { padding:36px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════ PANTALLA DE LOGIN ════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-eyebrow">Panel de administración</div>
+    <h1 class="login-title">Acceso <em>restringido</em></h1>
+    <div class="field">
+      <label for="loginPass">Contraseña</label>
+      <input type="password" id="loginPass" placeholder="••••••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-login" onclick="doLogin()"><span>Entrar</span></button>
+    <div class="login-error" id="loginError">Contraseña incorrecta. Inténtalo de nuevo.</div>
+  </div>
+</div>
+
+<!-- ════════════ PANEL ADMIN ════════════ -->
+<div id="adminPanel">
+
+  <header class="admin-header">
+    <div class="admin-brand">Roco Arqueológico <span>·</span> Admin</div>
+    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- FORMULARIO IZQUIERDO -->
+    <aside class="panel-form">
+      <div class="panel-title">Nuevo hallazgo</div>
+      <h2 class="form-heading">Publicar un <em>Roco</em></h2>
+
+      <div class="notif notif-ok" id="notifOk">✓ Post añadido correctamente. Copia el código generado y pégalo en el blog.</div>
+      <div class="notif notif-err" id="notifErr">⚠ Por favor, rellena los campos obligatorios.</div>
+
+      <!-- Nombre del archivo HTML -->
+      <div class="f-group">
+        <label class="f-label">Archivo HTML <span class="f-req">*</span></label>
+        <input class="f-input" id="fFile" type="text" placeholder="ej: el-roco-de-coin.html">
+        <div class="f-hint">Nombre exacto del archivo que has subido a GitHub (con .html)</div>
+      </div>
+
+      <!-- Título -->
+      <div class="f-group">
+        <label class="f-label">Título del hallazgo <span class="f-req">*</span></label>
+        <input class="f-input" id="fTitle" type="text" placeholder="ej: El Roco de Coín">
+      </div>
+
+      <!-- Localización -->
+      <div class="f-group">
+        <label class="f-label">Localización <span class="f-req">*</span></label>
+        <input class="f-input" id="fLocation" type="text" placeholder="ej: Coín · Málaga">
+      </div>
+
+      <!-- Río -->
+      <div class="f-group">
+        <label class="f-label">Río</label>
+        <input class="f-input" id="fRiver" type="text" placeholder="ej: Río Fahala">
+      </div>
+
+      <!-- Tipo de roca / tag -->
+      <div class="f-group">
+        <label class="f-label">Tipo de roca / etiqueta</label>
+        <input class="f-input" id="fTag" type="text" placeholder="ej: Calcarenita · Fluvial">
+      </div>
+
+      <div class="f-sep"></div>
+
+      <!-- Descripción -->
+      <div class="f-group">
+        <label class="f-label">Descripción breve <span class="f-req">*</span></label>
+        <textarea class="f-textarea" id="fExcerpt" placeholder="Descripción que aparecerá en la card del blog. 2-3 frases que enganchen al lector…"></textarea>
+      </div>
+
+      <!-- URL de imagen (opcional) -->
+      <div class="f-group">
+        <label class="f-label">URL de imagen (opcional)</label>
+        <input class="f-input" id="fImage" type="text" placeholder="https://… o déjalo vacío">
+        <div class="f-hint">URL directa a una foto del hallazgo. Si está vacío, se muestra el ícono SVG de piedra.</div>
+      </div>
+
+      <div class="f-sep"></div>
+
+      <button class="btn-add" onclick="addPost()">Añadir al blog</button>
+      <button class="btn-clear" onclick="clearForm()">Limpiar formulario</button>
+    </aside>
+
+    <!-- LISTA DERECHA -->
+    <main class="panel-list">
+      <div class="list-header">
+        <h2 class="list-title">Posts <em>publicados</em></h2>
+        <div class="list-count" id="listCount">0 posts</div>
+      </div>
+
+      <div class="instructions">
+        <div class="inst-title">⚙ Cómo funciona</div>
+        <div class="inst-body">
+          <strong>1. Sube el HTML</strong> que te da Claude a tu repositorio de GitHub.<br>
+          <strong>2. Rellena el formulario</strong> con el nombre del archivo y los datos del post.<br>
+          <strong>3. Pulsa "Añadir al blog"</strong> — se genera el bloque de código.<br>
+          <strong>4. Copia el código</strong> generado y <strong>pégalo en el array <code>POSTS</code></strong> del archivo <code>blog-roco.html</code>.<br>
+          <strong>5. Guarda y sube</strong> el blog a GitHub. ¡Listo!
+        </div>
+      </div>
+
+      <!-- Código generado -->
+      <div class="code-output" id="codeOutput">
+        <div class="code-header">
+          <div class="code-label">Código a copiar en blog-roco.html</div>
+          <button class="btn-copy" onclick="copyCode()">Copiar</button>
+        </div>
+        <div class="code-block" id="codeBlock"></div>
+      </div>
+
+      <!-- Lista de posts añadidos en esta sesión -->
+      <div id="postsList">
+        <div class="empty-list">
+          <div class="empty-list-title">Sin posts en esta sesión</div>
+          <div class="empty-list-sub">Los posts añadidos aparecerán aquí</div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════
+   CONTRASEÑA — CÁMBIALA POR LA TUYA
+   Esta es la única protección del panel. Guarda la URL en secreto.
+════════════════════════════════════ */
+const ADMIN_PASS = "roco2026edgar";
+
+/* ─── Login ─── */
+function doLogin(){
+  const val = document.getElementById('loginPass').value;
+  if(val === ADMIN_PASS){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    renderList();
+  } else {
+    document.getElementById('loginError').classList.add('show');
+    setTimeout(()=>document.getElementById('loginError').classList.remove('show'), 3000);
+  }
+}
+document.getElementById('loginPass').addEventListener('keydown', e=>{
+  if(e.key==='Enter') doLogin();
+});
+
+function logout(){
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('loginPass').value='';
+}
+
+/* ─── Sesión de posts ─── */
+let sessionPosts = [];
+// Posts base ya existentes en el blog (para mostrarlos en la lista)
+const EXISTING_POSTS = [
+  {
+    file:"el-gigante-de-tolox.html",
+    title:"El Gigante de Tolox",
+    location:"Tolox · Málaga",
+    river:"Río Grande",
+    tag:"Calcarenita · Fluvial",
+    excerpt:"Una piedra colosal hallada en las aguas del Río Grande de Tolox. Más de 300 millones de años de historia encerrados en calcarenita, testigo silencioso de fenicios, romanos y árabes en la Serranía de Ronda.",
+    image:"",
+    existing:true
+  }
+];
+
+/* ─── Añadir post ─── */
+function addPost(){
+  const file     = document.getElementById('fFile').value.trim();
+  const title    = document.getElementById('fTitle').value.trim();
+  const location = document.getElementById('fLocation').value.trim();
+  const river    = document.getElementById('fRiver').value.trim();
+  const tag      = document.getElementById('fTag').value.trim();
+  const excerpt  = document.getElementById('fExcerpt').value.trim();
+  const image    = document.getElementById('fImage').value.trim();
+
+  if(!file || !title || !location || !excerpt){
+    showNotif('err','Por favor, rellena todos los campos obligatorios (marcados con *).');
+    return;
+  }
+
+  const post = { file, title, location, river, tag, excerpt, image };
+  sessionPosts.push(post);
+  generateCode(post);
+  renderList();
+  showNotif('ok','✓ Post añadido. Copia el código de abajo y pégalo en el blog.');
+  clearForm();
+}
+
+/* ─── Generar código ─── */
+function generateCode(post){
+  const codeStr = `  {\n    file: "${post.file}",\n    title: "${post.title}",\n    location: "${post.location}",\n    river: "${post.river||''}",\n    excerpt: "${post.excerpt.replace(/"/g,'\'').replace(/\n/g,' ')}",\n    tag: "${post.tag||'Hallazgo fluvial'}",\n    image: "${post.image||''}"\n  }`;
+  document.getElementById('codeBlock').textContent = codeStr;
+  document.getElementById('codeOutput').classList.add('show');
+  document.getElementById('codeOutput').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ─── Copiar código ─── */
+function copyCode(){
+  const text = document.getElementById('codeBlock').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ Copiado';
+    setTimeout(()=>{ btn.textContent='Copiar'; }, 2000);
+  });
+}
+
+/* ─── Render lista ─── */
+function renderList(){
+  const list = document.getElementById('postsList');
+  const count = document.getElementById('listCount');
+  const allPosts = [...EXISTING_POSTS, ...sessionPosts];
+
+  count.textContent = allPosts.length + (allPosts.length===1?' post':' posts');
+
+  if(!allPosts.length){
+    list.innerHTML=`<div class="empty-list">
+      <div class="empty-list-title">Sin posts</div>
+      <div class="empty-list-sub">Añade el primer hallazgo</div>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = allPosts.map((p,i)=>`
+    <div class="post-item">
+      <div>
+        <div class="post-item-title">${p.title}</div>
+        <div class="post-item-meta">
+          <span>${p.location||'—'}</span>
+          ${p.river?`<span>· ${p.river}</span>`:''}
+          ${p.existing?'<span style="color:rgba(74,140,92,.6)">· Ya en el blog</span>':'<span style="color:rgba(201,168,76,.6)">· Nuevo esta sesión</span>'}
+        </div>
+        <div class="post-item-file">${p.file}</div>
+      </div>
+      <div class="post-item-actions">
+        <a class="btn-preview" href="${p.file}" target="_blank" rel="noopener">Ver</a>
+        ${!p.existing?`<button class="btn-del" onclick="deletePost(${i - EXISTING_POSTS.length})">Quitar</button>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ─── Eliminar post de la sesión ─── */
+function deletePost(idx){
+  if(idx<0||idx>=sessionPosts.length) return;
+  sessionPosts.splice(idx,1);
+  renderList();
+}
+
+/* ─── Limpiar formulario ─── */
+function clearForm(){
+  ['fFile','fTitle','fLocation','fRiver','fTag','fExcerpt','fImage']
+    .forEach(id=>document.getElementById(id).value='');
+}
+
+/* ─── Notificaciones ─── */
+function showNotif(type, msg){
+  const el = type==='ok'
+    ? document.getElementById('notifOk')
+    : document.getElementById('notifErr');
+  if(msg) el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>
