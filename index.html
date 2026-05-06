@@ -17,7 +17,6 @@
 <link rel="canonical" href="https://edgar-coin.github.io/roco-arqueologico/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style-common.css">
 
 <script type="application/ld+json">
 {
@@ -34,9 +33,9 @@
       "addressLocality": "Coín",
       "addressRegion": "Málaga",
       "addressCountry": "ES"
-    },
-  },
-},
+    }
+  }
+}
 </script>
 
 <style>
@@ -57,27 +56,27 @@
   --bg-main:     #16130e;
   --serif: 'Cormorant Garamond', Georgia, serif;
   --sans:  'Josefin Sans', sans-serif;
-},
+}
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; },
-html { scroll-behavior:smooth; },
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
 body {
   background: var(--bg-main);
   color: var(--parchment);
   font-family: var(--serif);
   overflow-x: hidden;
   cursor: default;
-},
+}
 
 /* Grain overlay */
 body::after {
   content:''; position:fixed; inset:0; pointer-events:none; z-index:1000; mix-blend-mode:overlay;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-},
+}
 
 /* ── Cursor ── */
-.cursor-dot  { width:6px; height:6px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); },
-.cursor-ring { width:32px; height:32px; border:1px solid rgba(201,168,76,.35); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all .12s ease-out; },
+.cursor-dot  { width:6px; height:6px; background:var(--gold); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+.cursor-ring { width:32px; height:32px; border:1px solid rgba(201,168,76,.35); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all .12s ease-out; }
 
 /* ── Nav ── */
 nav {
@@ -86,37 +85,37 @@ nav {
   padding:22px 60px;
   background:linear-gradient(to bottom,rgba(17,15,12,.97),transparent);
   backdrop-filter:blur(3px);
-},
+}
 .nav-brand {
   font-family:var(--sans); font-weight:100; font-size:11px;
   letter-spacing:.4em; text-transform:uppercase; color:var(--gold);
   text-decoration:none;
-},
-.nav-brand span { color:rgba(201,168,76,.45); },
+}
+.nav-brand span { color:rgba(201,168,76,.45); }
 .nav-right {
   display:flex; align-items:center; gap:36px;
-},
-.nav-links { display:flex; gap:32px; list-style:none; },
+}
+.nav-links { display:flex; gap:32px; list-style:none; }
 .nav-links a {
   font-family:var(--sans); font-size:10px; font-weight:300;
   letter-spacing:.25em; text-transform:uppercase;
   color:rgba(240,230,200,.4); text-decoration:none; transition:color .3s;
-},
-.nav-links a:hover { color:var(--gold); },
+}
+.nav-links a:hover { color:var(--gold); }
 
 /* ── HERO BLOG ── */
 .hero {
   min-height:100vh; display:flex; flex-direction:column;
   justify-content:flex-end; padding:0 80px 80px;
   position:relative; overflow:hidden;
-},
+}
 .hero-bg {
   position:absolute; inset:0;
   background:
     radial-gradient(ellipse at 20% 60%, rgba(122,63,30,.18) 0%, transparent 55%),
     radial-gradient(ellipse at 75% 30%, rgba(201,168,76,.07) 0%, transparent 45%),
     radial-gradient(ellipse at 50% 100%, rgba(17,15,12,.9) 0%, transparent 60%);
-},
+}
 /* Decorative horizontal lines */
 .hero-lines {
   position:absolute; inset:0; pointer-events:none;
@@ -127,97 +126,97 @@ nav {
     rgba(201,168,76,.03) 79px,
     rgba(201,168,76,.03) 80px
   );
-},
+}
 .hero-inner {
   position:relative; z-index:2; max-width:1100px;
-},
+}
 .hero-eyebrow {
   font-family:var(--sans); font-size:10px; font-weight:200;
   letter-spacing:.5em; text-transform:uppercase; color:var(--gold);
   display:flex; align-items:center; gap:16px;
   margin-bottom:32px;
   opacity:0; animation:fadeUp 1s .2s forwards;
-},
-.hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--gold); flex-shrink:0; },
+}
+.hero-eyebrow::before { content:''; width:40px; height:1px; background:var(--gold); flex-shrink:0; }
 .hero-title {
   font-family:var(--serif); font-weight:300;
   font-size:clamp(48px,7vw,110px); line-height:1.0;
   margin-bottom:16px;
   opacity:0; animation:fadeUp 1s .4s forwards;
-},
-.hero-title em { font-style:italic; color:var(--gold-light); },
+}
+.hero-title em { font-style:italic; color:var(--gold-light); }
 .hero-subtitle {
   font-family:var(--sans); font-size:12px; font-weight:200;
   letter-spacing:.35em; text-transform:uppercase;
   color:rgba(240,230,200,.35); margin-bottom:48px;
   opacity:0; animation:fadeUp 1s .6s forwards;
-},
+}
 .hero-desc {
   font-size:19px; font-weight:300; line-height:1.8;
   color:rgba(240,230,200,.65); max-width:560px;
   opacity:0; animation:fadeUp 1s .75s forwards;
-},
-.hero-desc strong { color:var(--parchment); font-weight:400; },
+}
+.hero-desc strong { color:var(--parchment); font-weight:400; }
 
 .hero-bottom {
   position:absolute; bottom:0; left:0; right:0; height:200px;
   background:linear-gradient(to top, var(--bg-main), transparent);
   pointer-events:none; z-index:1;
-},
+}
 .scroll-hint {
   position:absolute; bottom:36px; right:60px;
   display:flex; flex-direction:column; align-items:center; gap:10px;
   opacity:0; animation:fadeUp 1s 1.2s forwards;
-},
+}
 .scroll-line {
   width:1px; height:50px;
   background:linear-gradient(to bottom,rgba(201,168,76,.6),transparent);
   animation:scrollLine 2s ease-in-out infinite;
-},
+}
 @keyframes scrollLine {
-  0%{transform:scaleY(0);transform-origin:top},
-  50%{transform:scaleY(1);transform-origin:top},
-  51%{transform:scaleY(1);transform-origin:bottom},
-  100%{transform:scaleY(0);transform-origin:bottom},
-},
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform:scaleY(1);transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
 .scroll-text {
   font-family:var(--sans); font-size:8px; letter-spacing:.4em;
   text-transform:uppercase; color:rgba(201,168,76,.45);
   writing-mode:vertical-rl;
-},
+}
 
 /* ── Separador ── */
 .sep {
   display:flex; align-items:center; gap:24px;
   padding:0 80px; margin-bottom:0;
-},
-.sep-line { flex:1; height:1px; background:rgba(201,168,76,.1); },
+}
+.sep-line { flex:1; height:1px; background:rgba(201,168,76,.1); }
 .sep-label {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.5em; text-transform:uppercase; color:rgba(201,168,76,.35);
-},
+}
 
 /* ════════════════════════════════════
    SECCIÓN POSTS
 ════════════════════════════════════ */
-.posts-section { padding:80px 80px 120px; },
-.posts-inner { max-width:1200px; margin:0 auto; },
+.posts-section { padding:80px 80px 120px; }
+.posts-inner { max-width:1200px; margin:0 auto; }
 .posts-header {
   display:flex; align-items:baseline; justify-content:space-between;
   margin-bottom:56px;
-},
+}
 .posts-count {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.4em; text-transform:uppercase;
   color:rgba(201,168,76,.4);
-},
+}
 
 /* Grid de posts */
 .posts-grid {
   display:grid;
   grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
   gap:2px;
-},
+}
 
 /* ── Post Card ── */
 .post-card {
@@ -228,42 +227,42 @@ nav {
   text-decoration:none; color:inherit;
   display:flex; flex-direction:column;
   cursor:pointer;
-},
+}
 .post-card:hover {
   border-color:rgba(201,168,76,.35);
   box-shadow:0 8px 48px rgba(0,0,0,.5), 0 0 30px rgba(201,168,76,.06);
-},
+}
 .post-card::before {
   content:''; position:absolute; top:0; left:0; right:0; height:2px;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
   transform:scaleX(0); transition:transform .5s ease;
-},
-.post-card:hover::before { transform:scaleX(1); },
+}
+.post-card:hover::before { transform:scaleX(1); }
 
 /* Imagen */
 .card-img-wrap {
   position:relative; width:100%; aspect-ratio:16/10; overflow:hidden;
   background:rgba(17,15,12,.8);
-},
+}
 .card-img {
   width:100%; height:100%; object-fit:cover;
   transition:transform .7s ease, filter .5s ease;
   filter:brightness(.8) saturate(.7);
-},
+}
 .post-card:hover .card-img {
   transform:scale(1.04);
   filter:brightness(.9) saturate(.85);
-},
+}
 .card-img-overlay {
   position:absolute; inset:0;
   background:linear-gradient(to top, rgba(17,15,12,.9) 0%, rgba(17,15,12,.2) 60%, transparent 100%);
-},
+}
 .card-img-placeholder {
   width:100%; height:100%;
   display:flex; align-items:center; justify-content:center;
   background:linear-gradient(135deg, rgba(30,23,16,.9), rgba(17,15,12,.95));
-},
-.card-img-placeholder svg { opacity:.15; },
+}
+.card-img-placeholder svg { opacity:.15; }
 
 /* Etiqueta de categoría en imagen */
 .card-tag {
@@ -274,75 +273,75 @@ nav {
   border:1px solid rgba(201,168,76,.25);
   padding:5px 12px;
   backdrop-filter:blur(4px);
-},
+}
 
 /* Contenido de la card */
-.card-body { padding:32px 32px 28px; flex:1; display:flex; flex-direction:column; },
+.card-body { padding:32px 32px 28px; flex:1; display:flex; flex-direction:column; }
 .card-location {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.35em; text-transform:uppercase;
   color:rgba(201,168,76,.45); margin-bottom:12px;
   display:flex; align-items:center; gap:10px;
-},
-.card-location::before { content:''; width:16px; height:1px; background:rgba(201,168,76,.4); },
+}
+.card-location::before { content:''; width:16px; height:1px; background:rgba(201,168,76,.4); }
 .card-title {
   font-family:var(--serif); font-weight:400; font-size:26px; line-height:1.2;
   color:var(--parchment); margin-bottom:16px;
   transition:color .3s;
-},
-.post-card:hover .card-title { color:var(--gold-light); },
+}
+.post-card:hover .card-title { color:var(--gold-light); }
 .card-excerpt {
   font-size:15px; font-weight:300; line-height:1.75;
   color:rgba(240,230,200,.5); flex:1; margin-bottom:24px;
-},
+}
 .card-footer {
   display:flex; align-items:center; justify-content:space-between;
   border-top:1px solid rgba(201,168,76,.08); padding-top:20px;
-},
+}
 .card-river {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.2em; text-transform:uppercase;
   color:rgba(240,230,200,.25);
-},
+}
 .card-cta {
   font-family:var(--sans); font-size:9px; font-weight:300;
   letter-spacing:.25em; text-transform:uppercase;
   color:var(--gold); display:flex; align-items:center; gap:8px;
   transition:gap .3s;
-},
-.post-card:hover .card-cta { gap:14px; },
-.card-cta::after { content:'→'; },
+}
+.post-card:hover .card-cta { gap:14px; }
+.card-cta::after { content:'→'; }
 
 /* Post vacío / placeholder "Próximamente" */
 .card-soon {
   border-style:dashed; border-color:rgba(201,168,76,.07);
   opacity:.45; pointer-events:none;
-},
-.card-soon .card-title { color:rgba(240,230,200,.3); },
+}
+.card-soon .card-title { color:rgba(240,230,200,.3); }
 
 /* ── Estado vacío ── */
 .empty-state {
   grid-column:1/-1; text-align:center;
   padding:100px 40px;
   border:1px dashed rgba(201,168,76,.1);
-},
-.empty-icon { font-size:48px; opacity:.2; margin-bottom:24px; },
+}
+.empty-icon { font-size:48px; opacity:.2; margin-bottom:24px; }
 .empty-title {
   font-family:var(--serif); font-size:32px; font-weight:300;
   color:rgba(240,230,200,.4); margin-bottom:12px;
-},
+}
 .empty-sub {
   font-family:var(--sans); font-size:10px; font-weight:200;
   letter-spacing:.3em; text-transform:uppercase;
   color:rgba(201,168,76,.25);
-},
+}
 
 /* ── Loading skeleton ── */
-.card-skeleton { animation:shimmer 1.8s ease-in-out infinite; },
+.card-skeleton { animation:shimmer 1.8s ease-in-out infinite; }
 @keyframes shimmer {
-  0%,100% { opacity:.4; },
-  50%      { opacity:.8; },
-},
+  0%,100% { opacity:.4; }
+  50%      { opacity:.8; }
+}
 
 /* ════════════════════════════════════
    SECCIÓN SOBRE EL PROYECTO
@@ -352,47 +351,47 @@ nav {
   background:var(--earth);
   border-top:1px solid rgba(201,168,76,.08);
   border-bottom:1px solid rgba(201,168,76,.08);
-},
-.about-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; },
+}
+.about-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
 .about-label {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.5em; text-transform:uppercase; color:var(--gold);
   display:flex; align-items:center; gap:16px; margin-bottom:20px;
-},
-.about-label::before { content:''; width:32px; height:1px; background:var(--gold); },
+}
+.about-label::before { content:''; width:32px; height:1px; background:var(--gold); }
 .about-heading {
   font-family:var(--serif); font-weight:300;
   font-size:clamp(32px,3.5vw,52px); line-height:1.15; margin-bottom:28px;
-},
-.about-heading em { font-style:italic; color:var(--gold-light); },
+}
+.about-heading em { font-style:italic; color:var(--gold-light); }
 .about-body {
   font-size:17px; font-weight:300; line-height:1.85;
   color:rgba(240,230,200,.6);
-},
-.about-body p + p { margin-top:18px; },
-.about-body strong { color:var(--parchment); font-weight:400; },
+}
+.about-body p + p { margin-top:18px; }
+.about-body strong { color:var(--parchment); font-weight:400; }
 
-.about-stats { display:flex; flex-direction:column; gap:2px; },
+.about-stats { display:flex; flex-direction:column; gap:2px; }
 .stat-row {
   display:flex; align-items:baseline; justify-content:space-between;
   padding:24px 32px;
   background:rgba(13,11,8,.5);
   border:1px solid rgba(201,168,76,.08);
   transition:border-color .3s, background .3s;
-},
+}
 .stat-row:hover {
   border-color:rgba(201,168,76,.2);
   background:rgba(13,11,8,.8);
-},
+}
 .stat-num {
   font-family:var(--serif); font-size:48px; font-weight:300;
   color:var(--gold); line-height:1;
-},
+}
 .stat-label {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.3em; text-transform:uppercase;
   color:rgba(240,230,200,.3);
-},
+}
 
 /* ════════════════════════════════════
    FOOTER
@@ -401,84 +400,84 @@ footer {
   padding:60px 80px 40px;
   background:var(--obsidian);
   border-top:1px solid rgba(201,168,76,.08);
-},
-.footer-inner { max-width:1100px; margin:0 auto; },
+}
+.footer-inner { max-width:1100px; margin:0 auto; }
 .footer-top {
   display:grid; grid-template-columns:2fr 1fr 1fr;
   gap:60px; margin-bottom:48px;
-},
+}
 .footer-brand {
   font-family:var(--sans); font-weight:100; font-size:13px;
   letter-spacing:.4em; text-transform:uppercase; color:var(--gold);
   margin-bottom:16px;
-},
+}
 .footer-tagline {
   font-size:16px; font-weight:300; line-height:1.75;
   color:rgba(240,230,200,.4); max-width:320px;
-},
+}
 .footer-col-title {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.4em; text-transform:uppercase;
   color:rgba(201,168,76,.5); margin-bottom:20px;
-},
-.footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; },
+}
+.footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
 .footer-links a {
   font-family:var(--sans); font-size:11px; font-weight:300;
   letter-spacing:.08em; color:rgba(240,230,200,.3);
   text-decoration:none; transition:color .3s;
-},
-.footer-links a:hover { color:var(--gold); },
+}
+.footer-links a:hover { color:var(--gold); }
 .footer-bottom {
   display:flex; align-items:center; justify-content:space-between;
   border-top:1px solid rgba(201,168,76,.07); padding-top:28px;
-},
+}
 .footer-copy {
   font-family:var(--sans); font-size:10px; font-weight:200;
   letter-spacing:.12em; color:rgba(240,230,200,.2);
-},
+}
 .footer-badge {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.35em; text-transform:uppercase;
   color:rgba(201,168,76,.25);
-},
+}
 
 /* ── Reveal ── */
-.reveal { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease; },
-.reveal.visible { opacity:1; transform:translateY(0); },
-.reveal-delay-1 { transition-delay:.12s; },
-.reveal-delay-2 { transition-delay:.24s; },
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .9s ease, transform .9s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:.12s; }
+.reveal-delay-2 { transition-delay:.24s; }
 
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)}, to{opacity:1;transform:translateY(0)}, },
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
 /* ── Loading spinner ── */
 .spinner-wrap {
   grid-column:1/-1; text-align:center; padding:80px 40px;
   display:flex; flex-direction:column; align-items:center; gap:20px;
-},
+}
 .spinner {
   width:40px; height:40px; border-radius:50%;
   border:2px solid rgba(201,168,76,.1);
   border-top-color:var(--gold);
   animation:spin .8s linear infinite;
-},
-@keyframes spin { to{transform:rotate(360deg)}, },
+}
+@keyframes spin { to{transform:rotate(360deg)} }
 .spinner-text {
   font-family:var(--sans); font-size:9px; font-weight:200;
   letter-spacing:.4em; text-transform:uppercase;
   color:rgba(201,168,76,.3);
-},
+}
 
 /* ── Responsive ── */
 @media(max-width:900px){
-  nav { padding:18px 28px; },
-  .hero { padding:0 28px 60px; min-height:90vh; },
-  .posts-section { padding:60px 28px 80px; },
-  .posts-grid { grid-template-columns:1fr; },
-  .about-section { padding:70px 28px; },
-  .about-inner { grid-template-columns:1fr; gap:48px; },
-  footer { padding:50px 28px 32px; },
-  .footer-top { grid-template-columns:1fr; gap:36px; },
-},
+  nav { padding:18px 28px; }
+  .hero { padding:0 28px 60px; min-height:90vh; }
+  .posts-section { padding:60px 28px 80px; }
+  .posts-grid { grid-template-columns:1fr; }
+  .about-section { padding:70px 28px; }
+  .about-inner { grid-template-columns:1fr; gap:48px; }
+  footer { padding:50px 28px 32px; }
+  .footer-top { grid-template-columns:1fr; gap:36px; }
+}
 </style>
 </head>
 <body>
@@ -630,11 +629,11 @@ footer {
 /* ─── Cursor ─── */
 const dot=document.getElementById('dot'),ring=document.getElementById('ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;},);
-(function animC(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC);},)();
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+(function animC(){dot.style.left=mx+'px';dot.style.top=my+'px';rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animC);})();
 
 /* ─── Scroll reveal ─── */
-const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');},),{threshold:.1},);
+const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 /* ════════════════════════════════════
@@ -650,7 +649,7 @@ const POSTS = [
     title: "El Gigante de Tolox",
     location: "Tolox · Málaga",
     river: "Río Grande",
-    excerpt: "Una piedra colosal hallada en las aguas del Río Grande de Tolox. Más de 300 millones de años de historia encerrados en calcarenita, testigo silencioso de fenicios, romanos y árabes en la Serranía de Ronda.",
+    excerpt: "Una piedra colosal hallada en las aguas del Río Grande de Tolox. Más de 300 millones de años de historia encerrados en calcarenita.",
     tag: "Calcarenita · Fluvial",
     image: "assets/gigante-tolox.jpg"
   },
@@ -659,7 +658,7 @@ const POSTS = [
     title: "El Roco de Lola",
     location: "Coín · Málaga",
     river: "Río Cruz de Piedra",
-    excerpt: "Una pieza de calcarenita fluvial hallada en el corazón de Coín. Más de 200 millones de años de historia geológica y humana en la palma de una mano.",
+    excerpt: "Una pieza de calcarenita fluvial hallada en el corazón de Coín. Más de 200 millones de años de historia geológica.",
     tag: "Calcarenita · Fluvial",
     image: "assets/roco_imagen.jpg"
   },
@@ -677,20 +676,17 @@ const POSTS = [
     title: "La Rosa de Túnez",
     location: "Sáhara · Túnez",
     river: "Sabkha desértica",
-    excerpt: "Una flor de piedra nacida de la arena y el sol del Sáhara tunecino. Yeso espático formado durante cientos de años por evaporación.",
+    excerpt: "Una flor de piedra nacida de la arena y el sol del Sáhara tunecino. Yeso espático formado durante cientos de años.",
     tag: "Rosa del Desierto · Yeso",
     image: "assets/rosa-tunez-1.jpg"
   }
 ];
-// Re-observar nuevos elementos reveal
-  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>io.observe(el));
-},
 
-// Ejecutar al cargar
+/* ─── Renderizar posts ─── */
 function renderPosts(){
-  const grid=document.getElementById("postsGrid");
-  const count=document.getElementById("postsCount");
-  const statPosts=document.getElementById("statPosts");
+  const grid=document.getElementById('postsGrid');
+  const count=document.getElementById('postsCount');
+  const statPosts=document.getElementById('statPosts');
 
   if(!POSTS.length){
     grid.innerHTML=`<div class="empty-state">
@@ -698,36 +694,61 @@ function renderPosts(){
       <div class="empty-title">Aún sin hallazgos</div>
       <div class="empty-sub">El primer roco está en camino</div>
     </div>`;
-    count.textContent="0 hallazgos";
+    count.textContent='0 hallazgos';
     return;
   }
 
-  count.textContent = POSTS.length + (POSTS.length===1?" hallazgo":" hallazgos");
+  count.textContent = POSTS.length + (POSTS.length===1?' hallazgo':' hallazgos');
   if(statPosts) statPosts.textContent=POSTS.length;
 
   grid.innerHTML = POSTS.map((post,i)=>`
     <a href="${post.file}" class="post-card reveal" style="transition-delay:${i*.08}s" aria-label="Ver hallazgo: ${post.title}">
       <div class="card-img-wrap">
-        <img class="card-img" src="${post.image}" alt="${post.title}" loading="lazy">
+        ${post.image
+          ? `<img class="card-img" src="${post.image}" alt="${post.title}" loading="lazy">`
+          : `<div class="card-img-placeholder">
+              <svg width="80" height="100" viewBox="0 0 80 100" fill="none">
+                <path d="M40 5 L70 30 L65 70 L40 90 L15 70 L10 30 Z" fill="none" stroke="rgba(201,168,76,.4)" stroke-width="1.5"/>
+                <path d="M40 15 L58 33 L54 62 L40 78 L26 62 L22 33 Z" fill="rgba(201,168,76,.06)" stroke="rgba(201,168,76,.2)" stroke-width="1"/>
+                <circle cx="40" cy="46" r="6" fill="rgba(201,168,76,.12)" stroke="rgba(201,168,76,.3)" stroke-width="1"/>
+              </svg>
+            </div>`
+        }
         <div class="card-img-overlay"></div>
-        <div class="card-tag">${post.tag||"Hallazgo fluvial"}</div>
+        <div class="card-tag">${post.tag||'Hallazgo fluvial'}</div>
       </div>
       <div class="card-body">
-        <div class="card-location">${post.location||""}</div>
+        <div class="card-location">${post.location||''}</div>
         <h3 class="card-title">${post.title}</h3>
-        <p class="card-excerpt">${post.excerpt||""}</p>
+        <p class="card-excerpt">${post.excerpt||''}</p>
         <div class="card-footer">
-          <div class="card-river">${post.river||""}</div>
+          <div class="card-river">${post.river||''}</div>
           <div class="card-cta">Ver hallazgo</div>
         </div>
       </div>
     </a>
-  `).join("");
+  `).join('');
 
   // Re-observar nuevos elementos reveal
-  document.querySelectorAll(".reveal:not(.visible)").forEach(el=>io.observe(el));
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>io.observe(el));
 }
 
+// Ejecutar al cargar
+renderPosts();
+</script>
+</body>
+</html>
+<script>
+function renderPosts(){
+ const grid=document.getElementById('postsGrid');
+ const count=document.getElementById('postsCount');
+ const statPosts=document.getElementById('statPosts');
+ if(!POSTS.length){ grid.innerHTML='<div class="empty-state">Sin hallazgos</div>'; count.textContent='0 hallazgos'; return; }
+ count.textContent = POSTS.length + (POSTS.length===1?' hallazgo':' hallazgos');
+ if(statPosts) statPosts.textContent=POSTS.length;
+ grid.innerHTML = POSTS.map((post,i)=>).join('');
+ document.querySelectorAll('.reveal:not(.visible)').forEach(el=>io.observe(el));
+}
 renderPosts();
 </script>
 </body>
